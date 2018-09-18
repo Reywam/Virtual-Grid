@@ -1,4 +1,5 @@
 import {VirtualGrid} from "./VirtualGrid";
+import {Randomizer} from "./Randomizer";
 
 let canvas = <HTMLCanvasElement> document.getElementById("canvas");
 canvas.width = window.innerWidth;
