@@ -41,6 +41,7 @@ export class VirtualGrid
 
     public MoveRight(step:number)
     {
+        this.offsetX += step;
         for(let line of this.verticalLines)
         {
             let currBegin = line.GetBeginPoint();
@@ -61,6 +62,13 @@ export class VirtualGrid
 
     public MoveLeft(step:number)
     {
+        if(this.offsetX <= 0)
+        {
+            this.offsetX = 0;
+            return;
+        }
+
+        this.offsetX -= step;
         for(let line of this.verticalLines)
         {
             let currBegin = line.GetBeginPoint();
@@ -76,12 +84,18 @@ export class VirtualGrid
                 line.SetBeginPoint([currBegin[0] - step, currBegin[1]]);
                 line.SetEndPoint([currEnd[0] - step, currEnd[1]]);
             }
-
         }
     }
 
     public MoveUp(step:number)
     {
+        if(this.offsetY <= 0)
+        {
+            this.offsetY = 0;
+            return;
+        }
+        this.offsetY -= step;
+
         for(let line of this.horizontalLines)
         {
             let currBegin = line.GetBeginPoint();
@@ -102,6 +116,7 @@ export class VirtualGrid
 
     public MoveDown(step:number)
     {
+        this.offsetY += step;
         for(let line of this.horizontalLines)
         {
             let currBegin = line.GetBeginPoint();
