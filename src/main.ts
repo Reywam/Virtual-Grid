@@ -6,4 +6,12 @@ canvas.height = window.innerHeight;
 
 let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 let grid:VirtualGrid = new VirtualGrid(canvas.width, canvas.height,50, "#ff0000", 2);
-grid.Draw(ctx);
+
+function Render()
+{
+    grid.MoveDown(1);
+    grid.Draw(ctx);
+    requestAnimationFrame(Render);
+}
+
+Render();

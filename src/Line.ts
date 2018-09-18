@@ -28,6 +28,18 @@ export class Line
         ctx.strokeStyle = currentColor;
     }
 
+    public SetBeginPoint(newPoint:[number, number])
+    {
+        this.x1 = newPoint[0];
+        this.y1 = newPoint[1];
+    }
+
+    public SetEndPoint(newPoint:[number, number])
+    {
+        this.x2 = newPoint[0];
+        this.y2 = newPoint[1];
+    }
+
     public GetBeginPoint():[number, number]
     {
         return [this.x1, this.y1];
