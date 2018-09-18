@@ -5,5 +5,5 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-let grid:VirtualGrid = new VirtualGrid(ctx, 50, "#ff0000", 2);
-grid.Draw();
+let grid:VirtualGrid = new VirtualGrid(canvas.width, canvas.height,50, "#ff0000", 2);
+grid.Draw(ctx);
