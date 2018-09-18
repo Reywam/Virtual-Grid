@@ -46,8 +46,16 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            line.SetBeginPoint([currBegin[0] + step, currBegin[1]]);
-            line.SetEndPoint([currEnd[0] + step, currEnd[1]]);
+            if((currBegin[0] + step) / this.cellSize > this.verticalLinesCount)
+            {
+                line.SetBeginPoint([0, currBegin[1]]);
+                line.SetEndPoint([0, currEnd[1]]);
+            }
+            else
+            {
+                line.SetBeginPoint([currBegin[0] + step, currBegin[1]]);
+                line.SetEndPoint([currEnd[0] + step, currEnd[1]]);
+            }
         }
     }
 
@@ -58,8 +66,17 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            line.SetBeginPoint([currBegin[0] - step, currBegin[1]]);
-            line.SetEndPoint([currEnd[0] - step, currEnd[1]]);
+            if(currBegin[0] - step < 0)
+            {
+                line.SetBeginPoint([this.cellSize * this.verticalLinesCount, currBegin[1]]);
+                line.SetEndPoint([this.cellSize * this.verticalLinesCount, currEnd[1]]);
+            }
+            else
+            {
+                line.SetBeginPoint([currBegin[0] - step, currBegin[1]]);
+                line.SetEndPoint([currEnd[0] - step, currEnd[1]]);
+            }
+
         }
     }
 
@@ -70,8 +87,16 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            line.SetBeginPoint([currBegin[0], currBegin[1] - step]);
-            line.SetEndPoint([currEnd[0], currEnd[1] - step]);
+            if(currBegin[1] - step < 0)
+            {
+                line.SetBeginPoint([currBegin[0], this.cellSize * this.horizontalLinesCount]);
+                line.SetEndPoint([currEnd[0], this.cellSize * this.horizontalLinesCount]);
+            }
+            else
+            {
+                line.SetBeginPoint([currBegin[0], currBegin[1] - step]);
+                line.SetEndPoint([currEnd[0], currEnd[1] - step]);
+            }
         }
     }
 
@@ -82,22 +107,30 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            line.SetBeginPoint([currBegin[0], currBegin[1] + step]);
-            line.SetEndPoint([currEnd[0], currEnd[1] + step]);
+            if(currBegin[1] + step > this.cellSize * this.horizontalLinesCount)
+            {
+                line.SetBeginPoint([currBegin[0], 0]);
+                line.SetEndPoint([currEnd[0], 0]);
+            }
+            else
+            {
+                line.SetBeginPoint([currBegin[0], currBegin[1] + step]);
+                line.SetEndPoint([currEnd[0], currEnd[1] + step]);
+            }
         }
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
     {
         ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
-        for(let i = 0; i < this.horizontalLinesCount; i++)
+        for(let line of this.horizontalLines)
         {
-            this.horizontalLines[i].Draw(ctx);
+            line.Draw(ctx);
         }
 
-        for(let i = 0; i < this.verticalLinesCount; i++)
+        for(let line of this.verticalLines)
         {
-            this.verticalLines[i].Draw(ctx);
+            line.Draw(ctx);
         }
     }
 }
