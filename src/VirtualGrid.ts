@@ -9,7 +9,12 @@ export class VirtualGrid
     private cellSize:number;
     private horizontalLines:Array<Line>;
     private verticalLines:Array<Line>;
+    private backgroundColor:string;
+
     private rightBorder:number;
+    private topBorder:number = 0;
+    private leftBorder:number = 0;
+    private botBorder:number;
 
     private offsetX:number = 0;
     private offsetY:number = 0;
@@ -18,10 +23,12 @@ export class VirtualGrid
                 , canvasHeight:number
                 , cellSize:number
                 , lineColor:string = "#000000"
+                , backgroundColor = "$ffffff"
                 , lineThickness:number = 1)
     {
         this.cellSize = cellSize;
         this.lineColor = lineColor;
+        this.backgroundColor = backgroundColor;
         this.lineThickness = lineThickness;
         this.verticalLinesCount = Math.round(canvasWidth / cellSize);
         this.horizontalLinesCount = Math.round(canvasHeight / cellSize);
@@ -39,12 +46,26 @@ export class VirtualGrid
             this.verticalLines[i] = new Line(x, 0, x, canvasHeight, this.lineColor, this.lineThickness);
         }
 
-        this.rightBorder = this.cellSize * this.verticalLinesCount;
+        this.rightBorder = canvasWidth;
+        this.botBorder = canvasHeight;
+
+        let additionalHorizontalBorderLength = this.verticalLinesCount * this.cellSize - this.rightBorder;
+        if(additionalHorizontalBorderLength > 0)
+        {
+            this.rightBorder += additionalHorizontalBorderLength;
+            console.log(additionalHorizontalBorderLength);
+        }
+
+        let additionalVerticalBorderLength = this.horizontalLinesCount * this.cellSize - this.botBorder;
+        if(additionalVerticalBorderLength > 0)
+        {
+            this.botBorder += additionalVerticalBorderLength;
+            console.log(additionalVerticalBorderLength);
+        }
     }
 
-    public Move(movementX:number, movementY:number)
+    private MoveVerticalLines(movementX:number)
     {
-        console.log(this.offsetX);
         movementX = -movementX;
         this.offsetX += movementX;
         if(this.offsetX <= 0)
@@ -79,9 +100,51 @@ export class VirtualGrid
         }
     }
 
+    private MoveHorizontalLines(movementY:number)
+    {
+        movementY = -movementY;
+        this.offsetY += movementY;
+        if(this.offsetY <= 0)
+        {
+            this.offsetY = 0;
+            return;
+        }
+
+        for(let line of this.horizontalLines)
+        {
+            let currBegin = line.GetBeginPoint();
+            let currEnd = line.GetEndPoint();
+
+            if(currBegin[1] - movementY < this.topBorder)
+            {
+                line.SetBeginPoint([currBegin[0], this.botBorder - (movementY - currBegin[1])]);
+                line.SetEndPoint([currEnd[0], this.botBorder - (movementY - currEnd[1])]);
+            }
+            else if((currBegin[1] - movementY) > this.botBorder)
+            {
+                let overMoveValue:number = (currBegin[1] - movementY) - this.botBorder;
+                line.SetBeginPoint([currBegin[0], overMoveValue]);
+                line.SetEndPoint([currEnd[0], overMoveValue]);
+            }
+            else
+            {
+                line.SetBeginPoint([currBegin[0], currBegin[1] - movementY]);
+                line.SetEndPoint([currEnd[0], currEnd[1] - movementY]);
+            }
+        }
+    }
+
+    public Move(movementX:number, movementY:number)
+    {
+        console.log(this.offsetX, this.offsetY);
+        this.MoveVerticalLines(movementX);
+        this.MoveHorizontalLines(movementY);
+    }
+
     public Draw(ctx:CanvasRenderingContext2D)
     {
-        ctx.clearRect(0,0, ctx.canvas.width, ctx.canvas.height);
+        ctx.fillStyle = this.backgroundColor;
+        ctx.fillRect(0,0, ctx.canvas.width, ctx.canvas.height);
         for(let line of this.horizontalLines)
         {
             line.Draw(ctx);
