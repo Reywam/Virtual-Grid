@@ -14,11 +14,11 @@ let grid:VirtualGrid = new VirtualGrid(canvas.width
 
 let mouseBtnPressed:boolean = false;
 
-function mouseDown(event: MouseEvent): void {
+function mouseDown(): void {
     mouseBtnPressed = true;
 }
 
-function mouseUp(event: MouseEvent): void {
+function mouseUp(): void {
     mouseBtnPressed = false;
 }
 
