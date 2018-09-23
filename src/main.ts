@@ -7,10 +7,10 @@ canvas.height = window.innerHeight;
 let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 let grid:VirtualGrid = new VirtualGrid(canvas.width
     , canvas.height
-    ,50
+    ,100
     , "#00ff00"
     , "#ff0000"
-    ,2);
+    ,1);
 
 let mouseBtnPressed:boolean = false;
 

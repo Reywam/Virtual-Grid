@@ -30,8 +30,8 @@ export class VirtualGrid
         this.lineColor = lineColor;
         this.backgroundColor = backgroundColor;
         this.lineThickness = lineThickness;
-        this.verticalLinesCount = Math.round(canvasWidth / cellSize);
-        this.horizontalLinesCount = Math.round(canvasHeight / cellSize);
+        this.verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
+        this.horizontalLinesCount = Math.round(canvasHeight / cellSize) + 1;
 
         this.horizontalLines = new Array(this.horizontalLinesCount);
         this.verticalLines = new Array(this.verticalLinesCount);
@@ -62,6 +62,7 @@ export class VirtualGrid
             this.botBorder += additionalVerticalBorderLength;
             console.log(additionalVerticalBorderLength);
         }
+        console.log(this.verticalLines);
     }
 
     private MoveVerticalLines(movementX:number)
@@ -70,8 +71,8 @@ export class VirtualGrid
         this.offsetX += movementX;
         if(this.offsetX <= 0)
         {
+            movementX -= this.offsetX;
             this.offsetX = 0;
-            return;
         }
 
         for(let line of this.verticalLines)
@@ -79,14 +80,14 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            if(currBegin[0] - movementX < 0)
+            if(currBegin[0] - movementX< 0)
             {
                 line.SetBeginPoint([this.rightBorder - (movementX - currBegin[0])
                     , currBegin[1]]);
                 line.SetEndPoint([this.rightBorder - (movementX - currBegin[0])
                     , currEnd[1]]);
             }
-            else if((currBegin[0] - movementX) > this.rightBorder)
+            else if((currBegin[0] - movementX) + this.lineThickness > this.rightBorder)
             {
                 let overMoveValue:number = (currBegin[0] - movementX) - this.rightBorder;
                 line.SetBeginPoint([overMoveValue, currBegin[1]]);
@@ -106,8 +107,8 @@ export class VirtualGrid
         this.offsetY += movementY;
         if(this.offsetY <= 0)
         {
+            movementY -= this.offsetY;
             this.offsetY = 0;
-            return;
         }
 
         for(let line of this.horizontalLines)
@@ -120,7 +121,7 @@ export class VirtualGrid
                 line.SetBeginPoint([currBegin[0], this.botBorder - (movementY - currBegin[1])]);
                 line.SetEndPoint([currEnd[0], this.botBorder - (movementY - currEnd[1])]);
             }
-            else if((currBegin[1] - movementY) > this.botBorder)
+            else if((currBegin[1] - movementY) + this.lineThickness > this.botBorder)
             {
                 let overMoveValue:number = (currBegin[1] - movementY) - this.botBorder;
                 line.SetBeginPoint([currBegin[0], overMoveValue]);

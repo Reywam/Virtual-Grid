@@ -20,6 +20,7 @@ export class Line
     public Draw(ctx:CanvasRenderingContext2D)
     {
         let currentColor = ctx.strokeStyle;
+        ctx.lineWidth = this.thickness;
         ctx.strokeStyle = this.color;
         ctx.beginPath();
         ctx.moveTo(this.x1, this.y1);
