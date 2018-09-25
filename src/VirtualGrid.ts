@@ -1,4 +1,5 @@
 import {Line} from "./Line";
+import {Cell} from "./Cell";
 
 export class VirtualGrid
 {
@@ -19,11 +20,13 @@ export class VirtualGrid
     private offsetX:number = 0;
     private offsetY:number = 0;
 
+    private cells:Cell[][] = [];
+
     public constructor(canvasWidth:number
                 , canvasHeight:number
                 , cellSize:number
                 , lineColor:string = "#000000"
-                , backgroundColor = "$ffffff"
+                , backgroundColor = "#ffffff"
                 , lineThickness:number = 1)
     {
         this.cellSize = cellSize;
@@ -53,21 +56,34 @@ export class VirtualGrid
         if(additionalHorizontalBorderLength > 0)
         {
             this.rightBorder += additionalHorizontalBorderLength;
-            console.log(additionalHorizontalBorderLength);
         }
 
         let additionalVerticalBorderLength = this.horizontalLinesCount * this.cellSize - this.botBorder;
         if(additionalVerticalBorderLength > 0)
         {
             this.botBorder += additionalVerticalBorderLength;
-            console.log(additionalVerticalBorderLength);
         }
-        console.log(this.verticalLines);
+
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            this.cells[y] = [];
+            for(let x:number = 0; x < this.verticalLinesCount; x++)
+            {
+                let startPoint = this.horizontalLines[y].GetBeginPoint();
+                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1] + lineThickness;
+                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0] + lineThickness;
+                let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
+                this.cells[y][x] = new Cell(cellStartPoint[0]
+                    , cellStartPoint[1]
+                    , this.cellSize - lineThickness
+                    , "100");
+            }
+        }
+        console.log(this.cells);
     }
 
     private MoveVerticalLines(movementX:number)
     {
-        movementX = -movementX;
         this.offsetX += movementX;
         if(this.offsetX <= 0)
         {
@@ -103,7 +119,6 @@ export class VirtualGrid
 
     private MoveHorizontalLines(movementY:number)
     {
-        movementY = -movementY;
         this.offsetY += movementY;
         if(this.offsetY <= 0)
         {
@@ -135,11 +150,47 @@ export class VirtualGrid
         }
     }
 
+    private MoveCells(movementX:number, movementY:number)
+    {
+        if(this.offsetX == 0)
+        {
+            return;
+        }
+
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            for(let x:number = 0; x < this.verticalLinesCount; x++)
+            {
+                let currentCell:Cell = this.cells[y][x];
+                let beginPoint:[number, number] = currentCell.GetBeginPoint();
+                let endPoint:[number, number] = currentCell.GetEndPoint();
+
+                if((beginPoint[0] - movementX) > this.rightBorder)
+                {
+                    let shift:number = (beginPoint[0] - movementX) - this.rightBorder;
+                    currentCell.SetBeginPoint(shift, beginPoint[1]);
+                }
+                else if((beginPoint[0] - movementX) < this.leftBorder)
+                {
+                    let shift:number = movementX - beginPoint[0];
+                    currentCell.SetBeginPoint(this.rightBorder - shift, beginPoint[1]);
+                }
+                else
+                {
+                    currentCell.SetBeginPoint(beginPoint[0] - movementX, beginPoint[1]);
+                }
+            }
+        }
+    }
+
     public Move(movementX:number, movementY:number)
     {
         console.log(this.offsetX, this.offsetY);
+        movementX = -movementX;
+        movementY = - movementY;
         this.MoveVerticalLines(movementX);
         this.MoveHorizontalLines(movementY);
+        this.MoveCells(movementX, movementY);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
@@ -154,6 +205,14 @@ export class VirtualGrid
         for(let line of this.verticalLines)
         {
             line.Draw(ctx);
+        }
+
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            for(let x:number = 0; x < this.verticalLinesCount; x++)
+            {
+                this.cells[y][x].Draw(ctx);
+            }
         }
     }
 }

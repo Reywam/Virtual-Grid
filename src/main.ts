@@ -8,8 +8,8 @@ let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 let grid:VirtualGrid = new VirtualGrid(canvas.width
     , canvas.height
     ,100
-    , "#00ff00"
-    , "#ff0000"
+    , "#000000"
+    , "#dee2eb"
     ,1);
 
 let mouseBtnPressed:boolean = false;
