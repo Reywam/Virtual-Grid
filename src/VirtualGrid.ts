@@ -82,13 +82,6 @@ export class VirtualGrid
 
     private MoveVerticalLines(movementX:number)
     {
-        /*this.offsetX += movementX;
-        if(this.offsetX <= 0)
-        {
-            movementX -= this.offsetX;
-            this.offsetX = 0;
-        }*/
-
         for(let line of this.verticalLines)
         {
             let currBegin = line.GetBeginPoint();
@@ -117,13 +110,6 @@ export class VirtualGrid
 
     private MoveHorizontalLines(movementY:number)
     {
-        /*this.offsetY += movementY;
-        if(this.offsetY <= 0)
-        {
-            movementY -= this.offsetY;
-            this.offsetY = 0;
-        }*/
-
         for(let line of this.horizontalLines)
         {
             let currBegin = line.GetBeginPoint();
@@ -172,6 +158,22 @@ export class VirtualGrid
                 {
                     currentCell.SetBeginPoint(beginPoint[0] - movementX, beginPoint[1]);
                 }
+
+                if(beginPoint[1] - movementY < this.topBorder)
+                {
+                    let shift:number = this.botBorder - (movementY - beginPoint[1]);
+                    currentCell.SetBeginPoint(beginPoint[0], shift);
+                }
+                else if((beginPoint[1] - movementY) > this.botBorder)
+                {
+                    let shift:number = (beginPoint[1] - movementY) - this.botBorder;
+                    currentCell.SetBeginPoint(beginPoint[0], shift);
+                }
+                else
+                {
+                    currentCell.SetBeginPoint(beginPoint[0], beginPoint[1] - movementY);
+                }
+
             }
         }
     }
