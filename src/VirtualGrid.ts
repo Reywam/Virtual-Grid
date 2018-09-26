@@ -69,7 +69,6 @@ export class VirtualGrid
             this.cells[y] = [];
             for(let x:number = 0; x < this.verticalLinesCount; x++)
             {
-                let startPoint = this.horizontalLines[y].GetBeginPoint();
                 let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1] + lineThickness;
                 let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0] + lineThickness;
                 let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
@@ -79,17 +78,16 @@ export class VirtualGrid
                     , "100");
             }
         }
-        console.log(this.cells);
     }
 
     private MoveVerticalLines(movementX:number)
     {
-        this.offsetX += movementX;
+        /*this.offsetX += movementX;
         if(this.offsetX <= 0)
         {
             movementX -= this.offsetX;
             this.offsetX = 0;
-        }
+        }*/
 
         for(let line of this.verticalLines)
         {
@@ -119,12 +117,12 @@ export class VirtualGrid
 
     private MoveHorizontalLines(movementY:number)
     {
-        this.offsetY += movementY;
+        /*this.offsetY += movementY;
         if(this.offsetY <= 0)
         {
             movementY -= this.offsetY;
             this.offsetY = 0;
-        }
+        }*/
 
         for(let line of this.horizontalLines)
         {
@@ -152,11 +150,6 @@ export class VirtualGrid
 
     private MoveCells(movementX:number, movementY:number)
     {
-        if(this.offsetX == 0)
-        {
-            return;
-        }
-
         for(let y:number = 0; y < this.horizontalLinesCount; y++)
         {
             for(let x:number = 0; x < this.verticalLinesCount; x++)
@@ -165,15 +158,15 @@ export class VirtualGrid
                 let beginPoint:[number, number] = currentCell.GetBeginPoint();
                 let endPoint:[number, number] = currentCell.GetEndPoint();
 
-                if((beginPoint[0] - movementX) > this.rightBorder)
+                if((beginPoint[0] - movementX) > this.rightBorder - this.cellSize / 2)
                 {
                     let shift:number = (beginPoint[0] - movementX) - this.rightBorder;
                     currentCell.SetBeginPoint(shift, beginPoint[1]);
                 }
-                else if((beginPoint[0] - movementX) < this.leftBorder)
+                else if((endPoint[0] - movementX) < this.leftBorder)
                 {
-                    let shift:number = movementX - beginPoint[0];
-                    currentCell.SetBeginPoint(this.rightBorder - shift, beginPoint[1]);
+                    let shift:number = movementX - endPoint[0];
+                    currentCell.SetBeginPoint(this.rightBorder - (this.cellSize+shift), beginPoint[1]);
                 }
                 else
                 {
@@ -188,6 +181,22 @@ export class VirtualGrid
         console.log(this.offsetX, this.offsetY);
         movementX = -movementX;
         movementY = - movementY;
+
+        this.offsetX += movementX;
+        this.offsetY += movementY;
+
+        if(this.offsetX + movementX <= 0)
+        {
+            movementX -= this.offsetX;
+            this.offsetX = 0;
+        }
+
+        if(this.offsetY + movementY <= 0)
+        {
+            movementY -= this.offsetY;
+            this.offsetY = 0;
+        }
+
         this.MoveVerticalLines(movementX);
         this.MoveHorizontalLines(movementY);
         this.MoveCells(movementX, movementY);
