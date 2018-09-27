@@ -69,8 +69,8 @@ export class VirtualGrid
             this.cells[y] = [];
             for(let x:number = 0; x < this.verticalLinesCount; x++)
             {
-                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1] + lineThickness;
-                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0] + lineThickness;
+                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1];
+                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0];
                 let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
                 this.cells[y][x] = new Cell(cellStartPoint[0]
                     , cellStartPoint[1]
@@ -169,10 +169,10 @@ export class VirtualGrid
 
                 if(endPoint[1] - movementY < this.topBorder)
                 {
-                    let shift:number = this.botBorder - (movementY - endPoint[1]) - this.cellSize;
+                    let shift:number = this.botBorder - (movementY - endPoint[1]) - this.cellSize + this.lineThickness;
                     currentCell.SetBeginPoint(beginPoint[0], shift);
                 }
-                else if((beginPoint[1] - movementY) > this.botBorder - this.cellSize / 2)
+                else if((beginPoint[1] - movementY) + this.lineThickness > this.botBorder - this.cellSize / 2)
                 {
                     let shift:number = (beginPoint[1] - movementY) - this.botBorder;
                     currentCell.SetBeginPoint(beginPoint[0], shift);
