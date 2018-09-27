@@ -142,12 +142,12 @@ export class VirtualGrid
                 let beginPoint: [number, number] = currentCell.GetBeginPoint();
                 let endPoint: [number, number] = currentCell.GetEndPoint();
 
-                if ((beginPoint[0] - movementX) > this.rightBorder - this.cellSize / 2) {
+                if ((beginPoint[0] - movementX) + this.lineThickness > this.rightBorder - this.cellSize / 2) {
                     let shift: number = (beginPoint[0] - movementX) - this.rightBorder;
                     currentCell.SetBeginPoint(shift, beginPoint[1]);
                 }
                 else if ((endPoint[0] - movementX) < this.leftBorder) {
-                    let shift: number = movementX - endPoint[0];
+                    let shift: number = movementX - endPoint[0] - this.lineThickness ;
                     currentCell.SetBeginPoint(this.rightBorder - (this.cellSize + shift), beginPoint[1]);
                 }
                 else {
@@ -211,7 +211,7 @@ export class VirtualGrid
         this.MoveHorizontalLines(movementY);
 
         this.MoveCellsHorizontally(movementX);
-        this.MoveCellsVertically((movementY));
+        this.MoveCellsVertically(movementY);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
