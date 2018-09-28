@@ -75,7 +75,28 @@ export class VirtualGrid
                 this.cells[y][x] = new Cell(cellStartPoint[0]
                     , cellStartPoint[1]
                     , this.cellSize - lineThickness
-                    , "100");
+                    , "");
+            }
+        }
+        this.RecalculateCellsData(this.cells);
+    }
+
+    private RecalculateCellData(cell:Cell)
+    {
+        let beginPoint:[number, number] = cell.GetBeginPoint();
+        let valueX:number = (this.offsetX + beginPoint[0]) / this.cellSize;
+        let valueY:number = (this.offsetY + beginPoint[1]) / this.cellSize;
+        let newCellData:string = valueX + "-" + valueY;
+        cell.SetData(newCellData);
+    }
+
+    private RecalculateCellsData(cells:Cell[][])
+    {
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            for(let x:number = 0; x < this.verticalLinesCount; x++)
+            {
+                this.RecalculateCellData(cells[y][x]);
             }
         }
     }
@@ -136,21 +157,26 @@ export class VirtualGrid
 
     private MoveCellsHorizontally(movementX:number)
     {
-        for(let y:number = 0; y < this.horizontalLinesCount; y++) {
-            for (let x: number = 0; x < this.verticalLinesCount; x++) {
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            for (let x: number = 0; x < this.verticalLinesCount; x++)
+            {
                 let currentCell: Cell = this.cells[y][x];
                 let beginPoint: [number, number] = currentCell.GetBeginPoint();
                 let endPoint: [number, number] = currentCell.GetEndPoint();
 
-                if ((beginPoint[0] - movementX) + this.lineThickness > this.rightBorder - this.cellSize / 2) {
+                if ((beginPoint[0] - movementX) + this.lineThickness > this.rightBorder - this.cellSize / 2)
+                {
                     let shift: number = (beginPoint[0] - movementX) - this.rightBorder;
                     currentCell.SetBeginPoint(shift, beginPoint[1]);
                 }
-                else if ((endPoint[0] - movementX) < this.leftBorder) {
+                else if ((endPoint[0] - movementX) < this.leftBorder)
+                {
                     let shift: number = movementX - endPoint[0] - this.lineThickness ;
                     currentCell.SetBeginPoint(this.rightBorder - (this.cellSize + shift), beginPoint[1]);
                 }
-                else {
+                else
+                {
                     currentCell.SetBeginPoint(beginPoint[0] - movementX, beginPoint[1]);
                 }
             }
@@ -181,14 +207,13 @@ export class VirtualGrid
                 {
                     currentCell.SetBeginPoint(beginPoint[0], beginPoint[1] - movementY);
                 }
-
             }
         }
     }
 
     public Move(movementX:number, movementY:number)
     {
-        console.log(this.offsetX, this.offsetY);
+        this.RecalculateCellsData(this.cells);
         movementX = -movementX;
         movementY = - movementY;
 

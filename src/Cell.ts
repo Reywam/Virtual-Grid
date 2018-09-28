@@ -2,15 +2,15 @@ export class Cell
 {
     private data:string;
     private size:number;
-    private startPoint:[number,number]
-    private endPoint:[number,number]
+    private startPoint:[number,number];
+    private endPoint:[number,number];
     private dataDrawPoint:[number,number];
     private fontSize:number = 15;
 
     constructor(x:number, y:number, size:number, data:string)
     {
         this.startPoint = [x,y];
-        this.endPoint = [x + size,y + size]
+        this.endPoint = [x + size,y + size];
         this.data = data;
         this.size = size;
         let roundedHalfSize = Math.round(size / 2);
@@ -22,7 +22,7 @@ export class Cell
     public SetBeginPoint(x:number, y:number):void
     {
         this.startPoint = [x,y];
-        this.endPoint = [x + this.size, y + this.size]
+        this.endPoint = [x + this.size, y + this.size];
         let roundedHalfSize = Math.round(this.size / 2);
         let xDraw:number = x + roundedHalfSize - Math.round(this.data.length / 2) * this.fontSize;
         let yDraw:number = y + roundedHalfSize;
@@ -37,6 +37,11 @@ export class Cell
     public GetEndPoint():[number, number]
     {
         return this.endPoint;
+    }
+
+    public SetData(data:string)
+    {
+        this.data = data;
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
