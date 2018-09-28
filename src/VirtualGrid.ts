@@ -22,6 +22,8 @@ export class VirtualGrid
 
     private cells:Cell[][] = [];
 
+    private INIT_VALUE:string = "0-0";
+
     public constructor(canvasWidth:number
                 , canvasHeight:number
                 , cellSize:number
@@ -74,8 +76,8 @@ export class VirtualGrid
                 let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
                 this.cells[y][x] = new Cell(cellStartPoint[0]
                     , cellStartPoint[1]
-                    , this.cellSize - lineThickness
-                    , "");
+                    , this.cellSize
+                    , this.INIT_VALUE);
             }
         }
         this.RecalculateCellsData(this.cells);
@@ -86,7 +88,7 @@ export class VirtualGrid
         let beginPoint:[number, number] = cell.GetBeginPoint();
         let valueX:number = (this.offsetX + beginPoint[0]) / this.cellSize;
         let valueY:number = (this.offsetY + beginPoint[1]) / this.cellSize;
-        let newCellData:string = valueX + "-" + valueY;
+        let newCellData:string = Math.round(valueX) + "-" + Math.round(valueY);
         cell.SetData(newCellData);
     }
 
@@ -108,7 +110,7 @@ export class VirtualGrid
             let currBegin = line.GetBeginPoint();
             let currEnd = line.GetEndPoint();
 
-            if(currBegin[0] - movementX< 0)
+            if(currBegin[0] - movementX < 0)
             {
                 line.SetBeginPoint([this.rightBorder - (movementX - currBegin[0])
                     , currBegin[1]]);
