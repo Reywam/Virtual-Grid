@@ -2,12 +2,13 @@ import {Line} from "./Line";
 import {Cell} from "./Cell";
 import {Circle} from "./Circle";
 import {Rectangle} from "./Rectangle";
+import {GridCalculationHelper} from "./GridCalculationHelper";
 
 export class VirtualGrid
 {
     private verticalLinesCount:number;
     private horizontalLinesCount:number;
-    private lineThickness:number;
+    private lineThickness:number = 1;
     private lineColor:string;
     private cellSize:number;
     private horizontalLines:Array<Line>;
@@ -24,17 +25,19 @@ export class VirtualGrid
 
     private cells:Cell[][] = [];
 
+    private calculationHelper:GridCalculationHelper;
+
     public constructor(canvasWidth:number
                 , canvasHeight:number
                 , cellSize:number
                 , lineColor:string = "#000000"
                 , backgroundColor = "#ffffff"
-                , lineThickness:number = 1)
+                , calculationHelper:GridCalculationHelper)
     {
         this.cellSize = cellSize;
         this.lineColor = lineColor;
         this.backgroundColor = backgroundColor;
-        this.lineThickness = lineThickness;
+        this.calculationHelper = calculationHelper;
         this.verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
         this.horizontalLinesCount = Math.round(canvasHeight / cellSize) + 1;
 
@@ -80,27 +83,6 @@ export class VirtualGrid
                     , this.cellSize
                     , cellData
                     , new Rectangle(0,0,80,"#00aa00"));
-            }
-        }
-        console.log(this.cells);
-    }
-
-    private RecalculateCellData(cell:Cell)
-    {
-        let beginPoint:[number, number] = cell.GetBeginPoint();
-        let valueX:number = (this.offsetX + beginPoint[0]) / this.cellSize;
-        let valueY:number = (this.offsetY + beginPoint[1]) / this.cellSize;
-        let newCellData:string = Math.round(valueX) + "-" + Math.round(valueY);
-        cell.SetData(newCellData);
-    }
-
-    private RecalculateCellsData(cells:Cell[][])
-    {
-        for(let y:number = 0; y < this.horizontalLinesCount; y++)
-        {
-            for(let x:number = 0; x < this.verticalLinesCount; x++)
-            {
-                this.RecalculateCellData(cells[y][x]);
             }
         }
     }
@@ -217,9 +199,14 @@ export class VirtualGrid
 
     public Move(movementX:number, movementY:number)
     {
-        this.RecalculateCellsData(this.cells);
+        this.calculationHelper.RecalculateCellsData(this.cells
+            , this.horizontalLinesCount
+            , this.verticalLinesCount
+            , this.offsetX
+            , this.offsetY
+            , this.cellSize);
         movementX = -movementX;
-        movementY = - movementY;
+        movementY = -movementY;
 
         this.offsetX += movementX;
         this.offsetY += movementY;
@@ -241,7 +228,6 @@ export class VirtualGrid
 
         this.MoveCellsHorizontally(movementX);
         this.MoveCellsVertically(movementY);
-        console.log(this.cells);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
