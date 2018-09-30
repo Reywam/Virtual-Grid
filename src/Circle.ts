@@ -13,11 +13,18 @@ export class Circle implements IDrawableShape
         this.color = color;
     }
 
-    Draw(ctx: CanvasRenderingContext2D): void
+    public SetDrawCenter(x:number, y:number)
+    {
+        this.center = [x, y];
+        console.log(this.center);
+    }
+
+    public Draw(ctx: CanvasRenderingContext2D): void
     {
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.arc(this.center[0],this.center[0],this.radius,0,2*Math.PI);
+        ctx.arc(this.center[0],this.center[1],this.radius,0,2*Math.PI);
         ctx.fill();
+        ctx.closePath();
     }
 }

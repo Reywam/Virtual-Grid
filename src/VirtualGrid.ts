@@ -1,5 +1,7 @@
 import {Line} from "./Line";
 import {Cell} from "./Cell";
+import {Circle} from "./Circle";
+import {Rectangle} from "./Rectangle";
 
 export class VirtualGrid
 {
@@ -21,8 +23,6 @@ export class VirtualGrid
     private offsetY:number = 0;
 
     private cells:Cell[][] = [];
-
-    private INIT_VALUE:string = "0-0";
 
     public constructor(canvasWidth:number
                 , canvasHeight:number
@@ -74,13 +74,15 @@ export class VirtualGrid
                 let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1];
                 let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0];
                 let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
+                let cellData:string = x + "-" + y;
                 this.cells[y][x] = new Cell(cellStartPoint[0]
                     , cellStartPoint[1]
                     , this.cellSize
-                    , this.INIT_VALUE);
+                    , cellData
+                    , new Rectangle(0,0,80,"#00aa00"));
             }
         }
-        this.RecalculateCellsData(this.cells);
+        console.log(this.cells);
     }
 
     private RecalculateCellData(cell:Cell)
@@ -239,6 +241,7 @@ export class VirtualGrid
 
         this.MoveCellsHorizontally(movementX);
         this.MoveCellsVertically(movementY);
+        console.log(this.cells);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
