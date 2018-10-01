@@ -1,8 +1,7 @@
 import {Line} from "./Line";
 import {Cell} from "./Cell";
-import {Circle} from "./Circle";
-import {Rectangle} from "./Rectangle";
 import {GridCalculationHelper} from "./GridCalculationHelper";
+import {IShapeCreator} from "./IShapeCreator";
 
 export class VirtualGrid
 {
@@ -32,7 +31,8 @@ export class VirtualGrid
                 , cellSize:number
                 , lineColor:string = "#000000"
                 , backgroundColor = "#ffffff"
-                , calculationHelper:GridCalculationHelper)
+                , calculationHelper:GridCalculationHelper
+                , shapeCreator:IShapeCreator)
     {
         this.cellSize = cellSize;
         this.lineColor = lineColor;
@@ -82,7 +82,7 @@ export class VirtualGrid
                     , cellStartPoint[1]
                     , this.cellSize
                     , cellData
-                    , new Rectangle(0,0,80,"#00aa00"));
+                    , shapeCreator.createShape());
             }
         }
     }
