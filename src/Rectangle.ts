@@ -23,4 +23,13 @@ export class Rectangle implements IDrawableShape
         ctx.fillStyle = this.color;
         ctx.fillRect(this.beginPoint[0], this.beginPoint[1], this.size, this.size);
     }
+
+    public SetSize(size: number): void
+    {
+        this.beginPoint[0] += this.size / 2;
+        this.beginPoint[1] += this.size / 2;
+        this.size = size;
+        this.beginPoint[0] -= size / 2;
+        this.beginPoint[1] -= size / 2;
+    }
 }

@@ -27,4 +27,9 @@ export class Circle implements IDrawableShape
         ctx.fill();
         ctx.closePath();
     }
+
+    public SetSize(size: number): void
+    {
+        this.radius = size / 2;
+    }
 }

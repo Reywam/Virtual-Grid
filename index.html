@@ -6,6 +6,13 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+    <div class="config">
+        <span>Круг</span><input type="checkbox" id="circle">
+        <span>Квадрат</span><input type="checkbox" id="square">
+        <span>Размер ячеек</span><input type="number" min="0" step="1" value="100" id="cellSize">
+        <span>Размер фигур</span><input type="number" min="0" step="1"  value="0" id="shapeSize">
+        <span>Размер текста</span><input type="number" min="0" step="1"  value="0" id="textSize">
+    </div>
     <div class="app">
         <canvas id="canvas" width="300" height="300"></canvas>
     </div>

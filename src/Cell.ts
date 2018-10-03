@@ -55,6 +55,16 @@ export class Cell
         this.data = data;
     }
 
+    public SetFontSize(size:number)
+    {
+        this.fontSize = size;
+    }
+
+    public SetShapeSize(size:number)
+    {
+        this.backgroundShape.SetSize(size);
+    }
+
     public Draw(ctx:CanvasRenderingContext2D)
     {
         this.backgroundShape.Draw(ctx);

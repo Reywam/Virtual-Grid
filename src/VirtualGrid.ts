@@ -2,6 +2,7 @@ import {Line} from "./Line";
 import {Cell} from "./Cell";
 import {GridCalculationHelper} from "./GridCalculationHelper";
 import {IShapeCreator} from "./IShapeCreator";
+import {RectangleCreator} from "./RectangleCreator";
 
 export class VirtualGrid
 {
@@ -83,6 +84,87 @@ export class VirtualGrid
                     , this.cellSize
                     , cellData
                     , shapeCreator.createShape());
+            }
+        }
+    }
+
+    public ResetCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
+    {
+        this.cellSize = size;
+        this.verticalLinesCount = Math.round(canvasWidth / size) + 1;
+        this.horizontalLinesCount = Math.round(canvasHeight / size) + 1;
+
+        this.rightBorder = canvasWidth;
+        this.botBorder = canvasHeight;
+
+        let additionalHorizontalBorderLength = this.verticalLinesCount * this.cellSize - this.rightBorder;
+        if(additionalHorizontalBorderLength > 0)
+        {
+            this.rightBorder += additionalHorizontalBorderLength;
+        }
+
+        let additionalVerticalBorderLength = this.horizontalLinesCount * this.cellSize - this.botBorder;
+        if(additionalVerticalBorderLength > 0)
+        {
+            this.botBorder += additionalVerticalBorderLength;
+        }
+
+        this.verticalLines = [];
+        this.horizontalLines = [];
+
+        for(let i = 0, y = 0; i < this.horizontalLinesCount; i++, y += this.cellSize)
+        {
+            this.horizontalLines[i] = new Line(0, y, canvasWidth, y, this.lineColor, this.lineThickness);
+        }
+
+        for(let i = 0, x = 0; i < this.verticalLinesCount; i++, x += this.cellSize)
+        {
+            this.verticalLines[i] = new Line(x, 0, x, canvasHeight, this.lineColor, this.lineThickness);
+        }
+
+        for(let y:number = 0; y < this.horizontalLinesCount; y++)
+        {
+            this.cells[y] = [];
+            for(let x:number = 0; x < this.verticalLinesCount; x++)
+            {
+                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1];
+                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0];
+                let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
+                let cellData:string = x + "-" + y;
+                this.cells[y][x] = new Cell(cellStartPoint[0]
+                    , cellStartPoint[1]
+                    , this.cellSize
+                    , cellData
+                    , shapeCreator.createShape());
+            }
+        }
+
+        this.calculationHelper.RecalculateCellsData(this.cells
+            , this.horizontalLinesCount
+            , this.verticalLinesCount
+            , this.offsetX
+            , this.offsetY
+            , this.cellSize);
+    }
+
+    public ResetShapeSize(size:number)
+    {
+        for(let y:number = 0; y < this.cells.length; y++)
+        {
+            for(let x:number = 0; x < this.cells[y].length; x++)
+            {
+                this.cells[y][x].SetShapeSize(size);
+            }
+        }
+    }
+
+    public ResetTextSize(size:number)
+    {
+        for(let y:number = 0; y < this.cells.length; y++)
+        {
+            for(let x:number = 0; x < this.cells[y].length; x++)
+            {
+                this.cells[y][x].SetFontSize(size);
             }
         }
     }
