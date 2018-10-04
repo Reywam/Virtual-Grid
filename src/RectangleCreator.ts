@@ -15,8 +15,18 @@ export class RectangleCreator implements IShapeCreator
         this.color = color;
     }
 
-    createShape(): IDrawableShape
+    CreateShape(): IDrawableShape
     {
         return new Rectangle(this.centerX, this.centerY, this.size, this.color);
+    }
+
+    SetShapeColor(color: string): void
+    {
+        this.color = color;
+    }
+
+    SetShapeSize(size: number): void
+    {
+        this.size = size;
     }
 }

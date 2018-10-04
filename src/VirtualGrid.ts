@@ -2,6 +2,7 @@ import {Line} from "./Line";
 import {Cell} from "./Cell";
 import {GridCalculationHelper} from "./GridCalculationHelper";
 import {IShapeCreator} from "./IShapeCreator";
+import {ShapeState} from "./ShapeState";
 
 export class VirtualGrid
 {
@@ -82,12 +83,12 @@ export class VirtualGrid
                     , cellStartPoint[1]
                     , this.cellSize
                     , cellData
-                    , shapeCreator.createShape());
+                    , shapeCreator.CreateShape());
             }
         }
     }
 
-    public ResetCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
+    public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
     {
         this.cellSize = size;
         this.verticalLinesCount = Math.round(canvasWidth / size) + 1;
@@ -121,6 +122,10 @@ export class VirtualGrid
             this.verticalLines[i] = new Line(x, 0, x, canvasHeight, this.lineColor, this.lineThickness);
         }
 
+        const currentShapeState:ShapeState = this.cells[0][0].GetBackgroundShape().GetState();
+        shapeCreator.SetShapeColor(currentShapeState.color);
+        shapeCreator.SetShapeSize(currentShapeState.size);
+
         for(let y:number = 0; y < this.horizontalLinesCount; y++)
         {
             this.cells[y] = [];
@@ -134,7 +139,7 @@ export class VirtualGrid
                     , cellStartPoint[1]
                     , this.cellSize
                     , cellData
-                    , shapeCreator.createShape());
+                    , shapeCreator.CreateShape());
             }
         }
 
@@ -144,6 +149,7 @@ export class VirtualGrid
             , this.offsetX
             , this.offsetY
             , this.cellSize);
+        console.log(this.cells);
     }
 
     public ChangeShapeColor(color:string)
@@ -173,7 +179,7 @@ export class VirtualGrid
         }
     }
 
-    public ResetShapeSize(size:number)
+    public ChangeShapeSize(size:number)
     {
         for(let y:number = 0; y < this.cells.length; y++)
         {
@@ -190,12 +196,12 @@ export class VirtualGrid
         {
             for(let x:number = 0; x < this.cells[y].length; x++)
             {
-                this.cells[y][x].SetShape(shapeCreator.createShape());
+                this.cells[y][x].SetShape(shapeCreator.CreateShape());
             }
         }
     }
 
-    public ResetTextSize(size:number)
+    public ChangeTextSize(size:number)
     {
         for(let y:number = 0; y < this.cells.length; y++)
         {

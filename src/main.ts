@@ -35,7 +35,7 @@ shapeColorInput.value = INITIAL_SHAPE_COLOR.toString();
 gridColorInput.value = INITIAL_BACKGROUND_COLOR.toString();
 textColorInput.value = INITIAL_TEXT_COLOR.toString();
 
-cellSizeInput.addEventListener("change", ResetCellSize);
+cellSizeInput.addEventListener("change", ChangeCellSize);
 shapeSizeInput.addEventListener("change", ResetShapeSize);
 textSizeInput.addEventListener("change", ResetTextSize);
 rectangleCheckbox.addEventListener("change", ChooseShape);
@@ -77,19 +77,19 @@ function ChangeTextColor()
     grid.ChangeTextColor(textColorInput.value);
 }
 
-function ResetCellSize()
+function ChangeCellSize()
 {
-    grid.ResetCellSize(cellSizeInput.valueAsNumber, canvas.width, canvas.height, shapeCreator);
+    grid.ChangeCellSize(cellSizeInput.valueAsNumber, canvas.width, canvas.height, shapeCreator);
 }
 
 function ResetShapeSize()
 {
-    grid.ResetShapeSize(shapeSizeInput.valueAsNumber);
+    grid.ChangeShapeSize(shapeSizeInput.valueAsNumber);
 }
 
 function ResetTextSize()
 {
-    grid.ResetTextSize(textSizeInput.valueAsNumber);
+    grid.ChangeTextSize(textSizeInput.valueAsNumber);
 }
 
 let grid:VirtualGrid = new VirtualGrid(canvas.width

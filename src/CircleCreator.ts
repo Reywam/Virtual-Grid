@@ -15,8 +15,18 @@ export class CircleCreator implements IShapeCreator
         this.color = color;
     }
 
-    createShape(): IDrawableShape
+    CreateShape(): IDrawableShape
     {
         return new Circle(this.centerX, this.centerY, this.radius, this.color);
+    }
+
+    SetShapeColor(color: string): void
+    {
+        this.color = color;
+    }
+
+    SetShapeSize(size: number): void
+    {
+        this.radius = size;
     }
 }

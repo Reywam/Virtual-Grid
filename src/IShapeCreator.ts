@@ -2,5 +2,7 @@ import {IDrawableShape} from "./IDrawableShape";
 
 export interface IShapeCreator
 {
-    createShape():IDrawableShape;
+    CreateShape():IDrawableShape;
+    SetShapeSize(size:number):void;
+    SetShapeColor(color:string):void;
 }

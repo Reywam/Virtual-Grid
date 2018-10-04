@@ -15,11 +15,10 @@ export class Cell
 
     constructor(x:number, y:number, size:number, data:string, backgroundShape:IDrawableShape)
     {
-        this.startPoint = [x,y];
-        this.endPoint = [x + size,y + size];
+        this.startPoint = [x, y];
+        this.endPoint = [x + size, y + size];
         this.data = data;
         this.size = size;
-        this.fontSize = size / 5;
         this.center = size / 2;
         this.backgroundShape = backgroundShape;
 
@@ -83,6 +82,11 @@ export class Cell
     public SetTextColor(color:string)
     {
         this.textColor = color;
+    }
+
+    public GetBackgroundShape()
+    {
+        return this.backgroundShape;
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
