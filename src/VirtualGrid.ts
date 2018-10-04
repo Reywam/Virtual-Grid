@@ -2,7 +2,6 @@ import {Line} from "./Line";
 import {Cell} from "./Cell";
 import {GridCalculationHelper} from "./GridCalculationHelper";
 import {IShapeCreator} from "./IShapeCreator";
-import {RectangleCreator} from "./RectangleCreator";
 
 export class VirtualGrid
 {
@@ -154,6 +153,17 @@ export class VirtualGrid
             for(let x:number = 0; x < this.cells[y].length; x++)
             {
                 this.cells[y][x].SetShapeSize(size);
+            }
+        }
+    }
+
+    public ChangeCellsShape(shapeCreator:IShapeCreator)
+    {
+        for(let y:number = 0; y < this.cells.length; y++)
+        {
+            for(let x:number = 0; x < this.cells[y].length; x++)
+            {
+                this.cells[y][x].SetShape(shapeCreator.createShape());
             }
         }
     }

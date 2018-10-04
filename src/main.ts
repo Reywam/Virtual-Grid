@@ -10,9 +10,9 @@ canvas.height = window.innerHeight;
 
 let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
-const INITIAL_SHAPE_SIZE:number = 0;
+const INITIAL_SHAPE_SIZE:number = 50;
 const INITIAL_SHAPE_COLOR:string = "#00ff00";
-const CELL_SIZE:number = 90;
+const CELL_SIZE:number = 100;
 const LINE_COLOR:string = "#000000";
 const BACKGROUND_COLOR:string = "#dee2eb";
 
@@ -22,10 +22,31 @@ let shapeCreator:IShapeCreator  = new RectangleCreator(INITIAL_SHAPE_SIZE, INITI
 let cellSizeInput:HTMLInputElement = <HTMLInputElement> document.getElementById("cellSize");
 let shapeSizeInput:HTMLInputElement = <HTMLInputElement> document.getElementById("shapeSize");
 let textSizeInput:HTMLInputElement = <HTMLInputElement> document.getElementById("textSize");
+let circleCheckbox:HTMLInputElement = <HTMLInputElement> document.getElementById("circle");
+let rectangleCheckbox:HTMLInputElement = <HTMLInputElement> document.getElementById("square");
 
 cellSizeInput.addEventListener("change", ResetCellSize);
 shapeSizeInput.addEventListener("change", ResetShapeSize);
 textSizeInput.addEventListener("change", ResetTextSize);
+rectangleCheckbox.addEventListener("change", ChooseShape);
+circleCheckbox.addEventListener("change", ChooseShape);
+
+function ChooseShape()
+{
+    if(circleCheckbox.checked && !rectangleCheckbox.checked)
+    {
+        shapeCreator = new CircleCreator(shapeSizeInput.valueAsNumber, INITIAL_SHAPE_COLOR);
+    }
+    else if (rectangleCheckbox.checked && !circleCheckbox.checked)
+    {
+        shapeCreator = new RectangleCreator(shapeSizeInput.valueAsNumber, INITIAL_SHAPE_COLOR);
+    }
+    else
+    {
+        return;
+    }
+    grid.ChangeCellsShape(shapeCreator);
+}
 
 function ResetCellSize()
 {

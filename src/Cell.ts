@@ -1,4 +1,5 @@
 import {IDrawableShape} from "./IDrawableShape";
+import {ShapeState} from "./ShapeState";
 
 export class Cell
 {
@@ -58,6 +59,14 @@ export class Cell
     public SetFontSize(size:number)
     {
         this.fontSize = size;
+    }
+
+    public SetShape(shape:IDrawableShape)
+    {
+        let currentState:ShapeState = this.backgroundShape.GetState();
+        this.backgroundShape = shape;
+        this.backgroundShape.SetState(currentState);
+        this.backgroundShape.SetDrawCenter(currentState.drawCenter[0], currentState.drawCenter[1]);
     }
 
     public SetShapeSize(size:number)

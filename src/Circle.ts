@@ -1,4 +1,5 @@
 import {IDrawableShape} from "./IDrawableShape";
+import {ShapeState} from "./ShapeState";
 
 export class Circle implements IDrawableShape
 {
@@ -31,5 +32,17 @@ export class Circle implements IDrawableShape
     public SetSize(size: number): void
     {
         this.radius = size / 2;
+    }
+
+    GetState(): ShapeState
+    {
+        return new ShapeState(this.radius, this.center, this.color);
+    }
+
+    SetState(state: ShapeState): void
+    {
+        this.radius = state.size;
+        this.center = state.drawCenter;
+        this.color = state.color;
     }
 }
