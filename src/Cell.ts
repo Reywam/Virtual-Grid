@@ -9,6 +9,7 @@ export class Cell
     private endPoint:[number,number];
     private dataDrawPoint:[number, number];
     private fontSize:number = 15;
+    private textColor:string = "#000000";
     private center:number;
     private backgroundShape:IDrawableShape;
 
@@ -74,10 +75,20 @@ export class Cell
         this.backgroundShape.SetSize(size);
     }
 
+    public SetShapeColor(color:string)
+    {
+        this.backgroundShape.SetColor(color);
+    }
+
+    public SetTextColor(color:string)
+    {
+        this.textColor = color;
+    }
+
     public Draw(ctx:CanvasRenderingContext2D)
     {
         this.backgroundShape.Draw(ctx);
-        ctx.fillStyle = "#000000";
+        ctx.fillStyle = this.textColor;
         ctx.font = this.fontSize+"px Verdana";
         ctx.fillText(this.data, this.dataDrawPoint[0], this.dataDrawPoint[1]);
     }

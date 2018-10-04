@@ -146,6 +146,33 @@ export class VirtualGrid
             , this.cellSize);
     }
 
+    public ChangeShapeColor(color:string)
+    {
+        for(let y:number = 0; y < this.cells.length; y++)
+        {
+            for(let x:number = 0; x < this.cells[y].length; x++)
+            {
+                this.cells[y][x].SetShapeColor(color);
+            }
+        }
+    }
+
+    public ChangeGridColor(color:string)
+    {
+        this.backgroundColor = color;
+    }
+
+    public ChangeTextColor(color:string)
+    {
+        for(let y:number = 0; y < this.cells.length; y++)
+        {
+            for(let x:number = 0; x < this.cells[y].length; x++)
+            {
+                this.cells[y][x].SetTextColor(color);
+            }
+        }
+    }
+
     public ResetShapeSize(size:number)
     {
         for(let y:number = 0; y < this.cells.length; y++)

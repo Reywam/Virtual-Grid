@@ -45,4 +45,9 @@ export class Circle implements IDrawableShape
         this.center = state.drawCenter;
         this.color = state.color;
     }
+
+    SetColor(color: string): void
+    {
+        this.color = color;
+    }
 }

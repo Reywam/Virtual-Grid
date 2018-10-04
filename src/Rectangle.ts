@@ -41,4 +41,9 @@ export class Rectangle implements IDrawableShape
         this.drawCenter = state.drawCenter;
         this.color = state.color;
     }
+
+    SetColor(color: string): void
+    {
+        this.color = color;
+    }
 }
