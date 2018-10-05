@@ -1,4 +1,6 @@
 import {Cell} from "./Cell";
+import {Line} from "./Line";
+import {IShapeCreator} from "./IShapeCreator";
 
 export class GridCalculationHelper
 {
@@ -39,4 +41,55 @@ export class GridCalculationHelper
         }
     }
 
+    public CalculateAdditionalBorderValues(horizontalLinesCount:number
+                                          , verticalLinesCount:number
+                                          , cellSize:number
+                                          , rightBorder:number
+                                          , botBorder:number):[number, number]
+    {
+        let additionalHorizontalBorderLength = verticalLinesCount * cellSize - rightBorder;
+        let additionalVerticalBorderLength = horizontalLinesCount * cellSize - botBorder;
+        return [additionalHorizontalBorderLength, additionalVerticalBorderLength];
+    }
+
+    public CalculateNewBorderValues(additionalHorizontalBorderLength:number
+                              , additionalVerticalBorderLength:number
+                              , rightBorder:number
+                              , botBorder:number):[number, number]
+    {
+        if(additionalHorizontalBorderLength > 0)
+        {
+            rightBorder += additionalHorizontalBorderLength;
+        }
+
+        if(additionalVerticalBorderLength > 0)
+        {
+            botBorder += additionalVerticalBorderLength;
+        }
+        return [rightBorder, botBorder];
+    }
+
+    public CalculateNewCellArray(cells:Cell[][]
+                                 , horizontalLines:Line[]
+                                 , verticalLines:Line[]
+                                 , cellSize:number
+                                 , shapeCreator:IShapeCreator)
+    {
+        for(let y:number = 0; y < horizontalLines.length; y++)
+        {
+            cells[y] = [];
+            for(let x:number = 0; x < verticalLines.length; x++)
+            {
+                let verticalStartPoint:number = horizontalLines[y].GetBeginPoint()[1];
+                let horizontalStartPoint:number = verticalLines[x].GetBeginPoint()[0];
+                let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
+                let cellData:string = x + "-" + y;
+                cells[y][x] = new Cell(cellStartPoint[0]
+                    , cellStartPoint[1]
+                    , cellSize
+                    , cellData
+                    , shapeCreator.CreateShape());
+            }
+        }
+    }
 }

@@ -41,7 +41,6 @@ export class VirtualGrid
         this.calculationHelper = calculationHelper;
         this.verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
         this.horizontalLinesCount = Math.round(canvasHeight / cellSize) + 1;
-
         this.horizontalLines = new Array(this.horizontalLinesCount);
         this.verticalLines = new Array(this.verticalLinesCount);
 
@@ -58,34 +57,24 @@ export class VirtualGrid
         this.rightBorder = canvasWidth;
         this.botBorder = canvasHeight;
 
-        let additionalHorizontalBorderLength = this.verticalLinesCount * this.cellSize - this.rightBorder;
-        if(additionalHorizontalBorderLength > 0)
-        {
-            this.rightBorder += additionalHorizontalBorderLength;
-        }
+        let additionalBorderValues:[number, number]
+                = this.calculationHelper.CalculateAdditionalBorderValues(this.horizontalLinesCount
+                                                                    , this.verticalLinesCount
+                                                                    , this.cellSize
+                                                                    , this.rightBorder
+                                                                    , this.botBorder);
+        let newBorders:[number, number] = this.calculationHelper.CalculateNewBorderValues(additionalBorderValues[0]
+                                                        , additionalBorderValues[1]
+                                                        , this.rightBorder
+                                                        , this.botBorder);
+        this.rightBorder = newBorders[0];
+        this.botBorder = newBorders[1];
 
-        let additionalVerticalBorderLength = this.horizontalLinesCount * this.cellSize - this.botBorder;
-        if(additionalVerticalBorderLength > 0)
-        {
-            this.botBorder += additionalVerticalBorderLength;
-        }
-
-        for(let y:number = 0; y < this.horizontalLinesCount; y++)
-        {
-            this.cells[y] = [];
-            for(let x:number = 0; x < this.verticalLinesCount; x++)
-            {
-                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1];
-                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0];
-                let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
-                let cellData:string = x + "-" + y;
-                this.cells[y][x] = new Cell(cellStartPoint[0]
-                    , cellStartPoint[1]
-                    , this.cellSize
-                    , cellData
-                    , shapeCreator.CreateShape());
-            }
-        }
+        this.calculationHelper.CalculateNewCellArray(this.cells
+            , this.horizontalLines
+            , this.verticalLines
+            , this.cellSize
+            , shapeCreator);
     }
 
     public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
@@ -97,17 +86,18 @@ export class VirtualGrid
         this.rightBorder = canvasWidth;
         this.botBorder = canvasHeight;
 
-        let additionalHorizontalBorderLength = this.verticalLinesCount * this.cellSize - this.rightBorder;
-        if(additionalHorizontalBorderLength > 0)
-        {
-            this.rightBorder += additionalHorizontalBorderLength;
-        }
-
-        let additionalVerticalBorderLength = this.horizontalLinesCount * this.cellSize - this.botBorder;
-        if(additionalVerticalBorderLength > 0)
-        {
-            this.botBorder += additionalVerticalBorderLength;
-        }
+        let additionalBorderValues:[number, number]
+            = this.calculationHelper.CalculateAdditionalBorderValues(this.horizontalLinesCount
+            , this.verticalLinesCount
+            , this.cellSize
+            , this.rightBorder
+            , this.botBorder);
+        let newBorders:[number, number] = this.calculationHelper.CalculateNewBorderValues(additionalBorderValues[0]
+            , additionalBorderValues[1]
+            , this.rightBorder
+            , this.botBorder);
+        this.rightBorder = newBorders[0];
+        this.botBorder = newBorders[1];
 
         this.verticalLines = [];
         this.horizontalLines = [];
@@ -126,22 +116,11 @@ export class VirtualGrid
         shapeCreator.SetShapeColor(currentShapeState.color);
         shapeCreator.SetShapeSize(currentShapeState.size);
 
-        for(let y:number = 0; y < this.horizontalLinesCount; y++)
-        {
-            this.cells[y] = [];
-            for(let x:number = 0; x < this.verticalLinesCount; x++)
-            {
-                let verticalStartPoint:number = this.horizontalLines[y].GetBeginPoint()[1];
-                let horizontalStartPoint:number = this.verticalLines[x].GetBeginPoint()[0];
-                let cellStartPoint = [horizontalStartPoint,verticalStartPoint];
-                let cellData:string = x + "-" + y;
-                this.cells[y][x] = new Cell(cellStartPoint[0]
-                    , cellStartPoint[1]
-                    , this.cellSize
-                    , cellData
-                    , shapeCreator.CreateShape());
-            }
-        }
+        this.calculationHelper.CalculateNewCellArray(this.cells
+            , this.horizontalLines
+            , this.verticalLines
+            , this.cellSize
+            , shapeCreator);
 
         this.calculationHelper.RecalculateCellsData(this.cells
             , this.horizontalLinesCount
