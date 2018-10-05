@@ -1,6 +1,6 @@
-import {Cell} from "./Cell";
-import {Line} from "./Line";
-import {IShapeCreator} from "./IShapeCreator";
+import {Cell} from "../Cell";
+import {Line} from "../Line";
+import {IShapeCreator} from "../Creators/IShapeCreator";
 import {GridSettings} from "./GridSettings";
 
 export class GridCalculationHelper

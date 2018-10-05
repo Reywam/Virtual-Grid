@@ -1,5 +1,5 @@
-import {IDrawableShape} from "./IDrawableShape";
-import {ShapeState} from "./ShapeState";
+import {IDrawableShape} from "./Shapes/IDrawableShape";
+import {ShapeState} from "./Shapes/ShapeState";
 
 export class Cell
 {
@@ -10,7 +10,7 @@ export class Cell
     private dataDrawPoint:[number, number];
     private fontSize:number = 15;
     private textColor:string = "#000000";
-    private center:number;
+    private center:[number, number];
     private backgroundShape:IDrawableShape;
 
     constructor(x:number, y:number, size:number, data:string, backgroundShape:IDrawableShape)
@@ -19,26 +19,28 @@ export class Cell
         this.endPoint = [x + size, y + size];
         this.data = data;
         this.size = size;
-        this.center = size / 2;
+        this.center = [this.startPoint[0] + size / 2, this.startPoint[1] + size / 2];
         this.backgroundShape = backgroundShape;
 
         let canvas = <HTMLCanvasElement> document.getElementById("canvas");
         let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
         let dataMetrics:TextMetrics= ctx.measureText(data);
 
-        this.dataDrawPoint = [x + this.center - dataMetrics.width, y + this.center];
-        this.backgroundShape.SetDrawCenter(x + this.center , y + this.center);
+        this.dataDrawPoint = [this.center[0] - dataMetrics.width / 2, this.center[1]];
+        this.backgroundShape.SetDrawCenter(this.center[0], this.center[1]);
     }
 
     public SetBeginPoint(x:number, y:number):void
     {
         this.startPoint = [x, y];
         this.endPoint = [x + this.size, y + this.size];
-        let canvas = <HTMLCanvasElement> document.getElementById("canvas");
+        /*let canvas = <HTMLCanvasElement> document.getElementById("canvas");
         let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-        let dataMetrics:TextMetrics= ctx.measureText(this.data);
-        this.dataDrawPoint = [x + this.center - dataMetrics.width / 2, y + this.center];
-        this.backgroundShape.SetDrawCenter(x + this.center, y + this.center);
+        let dataMetrics:TextMetrics= ctx.measureText(this.data);*/
+        //this.dataDrawPoint = [x + this.center - dataMetrics.width / 2, y + this.center];
+        this.center = [this.startPoint[0] + this.size / 2, this.startPoint[1] + this.size / 2];
+        this.dataDrawPoint = this.center;
+        this.backgroundShape.SetDrawCenter(this.center[0], this.center[1]);
     }
 
     public GetBeginPoint():[number, number]

@@ -1,6 +1,6 @@
 import {IShapeCreator} from "./IShapeCreator";
-import {IDrawableShape} from "./IDrawableShape";
-import {Rectangle} from "./Rectangle";
+import {IDrawableShape} from "../Shapes/IDrawableShape";
+import {Rectangle} from "../Shapes/Rectangle";
 
 export class RectangleCreator implements IShapeCreator
 {

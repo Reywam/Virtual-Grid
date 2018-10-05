@@ -1,8 +1,8 @@
-import {VirtualGrid} from "./VirtualGrid";
-import {GridCalculationHelper} from "./GridCalculationHelper";
-import {RectangleCreator} from "./RectangleCreator";
-import {CircleCreator} from "./CircleCreator";
-import {IShapeCreator} from "./IShapeCreator";
+import {VirtualGrid} from "./Grid/VirtualGrid";
+import {GridCalculationHelper} from "./Grid/GridCalculationHelper";
+import {RectangleCreator} from "./Creators/RectangleCreator";
+import {CircleCreator} from "./Creators/CircleCreator";
+import {IShapeCreator} from "./Creators/IShapeCreator";
 
 let canvas = <HTMLCanvasElement> document.getElementById("canvas");
 canvas.width = window.innerWidth;

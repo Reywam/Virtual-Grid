@@ -1,14 +1,13 @@
-import {Line} from "./Line";
-import {Cell} from "./Cell";
+import {Line} from "../Line";
+import {Cell} from "../Cell";
 import {GridCalculationHelper} from "./GridCalculationHelper";
-import {IShapeCreator} from "./IShapeCreator";
-import {ShapeState} from "./ShapeState";
+import {IShapeCreator} from "../Creators/IShapeCreator";
+import {ShapeState} from "../Shapes/ShapeState";
 import {GridSettings} from "./GridSettings";
 
 export class VirtualGrid
 {
     private settings:GridSettings = new GridSettings();
-
     private horizontalLines:Array<Line>;
     private verticalLines:Array<Line>;
     private cells:Cell[][] = [];
@@ -55,16 +54,17 @@ export class VirtualGrid
             , this.verticalLines
             , this.settings.cellSize
             , shapeCreator);
+        console.log(this.cells);
     }
 
     public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
     {
         this.settings.cellSize = size;
-        let verticalLinesCount = Math.round(canvasWidth / size) + 1;
-        let horizontalLinesCount = Math.round(canvasHeight / size) + 1;
-
         this.settings.rightBorder = canvasWidth;
         this.settings.botBorder = canvasHeight;
+
+        let verticalLinesCount = Math.round(canvasWidth / size) + 1;
+        let horizontalLinesCount = Math.round(canvasHeight / size) + 1;
 
         let additionalBorderValues:[number, number]
             = this.calculationHelper.CalculateAdditionalBorderValues(horizontalLinesCount
@@ -232,7 +232,7 @@ export class VirtualGrid
                 }
                 else if ((endPoint[0] - movementX) < this.settings.leftBorder)
                 {
-                    let shift: number = movementX - endPoint[0] - this.settings.lineThickness ;
+                    let shift: number = movementX - endPoint[0];
                     currentCell.SetBeginPoint(this.settings.rightBorder - (this.settings.cellSize + shift)
                         , beginPoint[1]);
                 }
@@ -257,7 +257,7 @@ export class VirtualGrid
                 if(endPoint[1] - movementY < this.settings.topBorder)
                 {
                     let shift:number = this.settings.botBorder - (movementY - endPoint[1])
-                        - this.settings.cellSize + this.settings.lineThickness;
+                        - this.settings.cellSize;
                     currentCell.SetBeginPoint(beginPoint[0], shift);
                 }
                 else if((beginPoint[1] - movementY) + this.settings.lineThickness
@@ -305,6 +305,7 @@ export class VirtualGrid
 
         this.MoveCellsHorizontally(movementX);
         this.MoveCellsVertically(movementY);
+        console.log(this.cells);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)

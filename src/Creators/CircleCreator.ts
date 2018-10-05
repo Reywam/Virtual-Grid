@@ -1,6 +1,6 @@
 import {IShapeCreator} from "./IShapeCreator";
-import {IDrawableShape} from "./IDrawableShape";
-import {Circle} from "./Circle";
+import {IDrawableShape} from "../Shapes/IDrawableShape";
+import {Circle} from "../Shapes/Circle";
 
 export class CircleCreator implements IShapeCreator
 {

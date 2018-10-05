@@ -1,4 +1,4 @@
-import {IDrawableShape} from "./IDrawableShape";
+import {IDrawableShape} from "../Shapes/IDrawableShape";
 
 export interface IShapeCreator
 {
