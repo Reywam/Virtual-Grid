@@ -34,12 +34,11 @@ export class Cell
     {
         this.startPoint = [x, y];
         this.endPoint = [x + this.size, y + this.size];
-        /*let canvas = <HTMLCanvasElement> document.getElementById("canvas");
+        let canvas = <HTMLCanvasElement> document.getElementById("canvas");
         let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
-        let dataMetrics:TextMetrics= ctx.measureText(this.data);*/
-        //this.dataDrawPoint = [x + this.center - dataMetrics.width / 2, y + this.center];
+        let dataMetrics:TextMetrics= ctx.measureText(this.data);
         this.center = [this.startPoint[0] + this.size / 2, this.startPoint[1] + this.size / 2];
-        this.dataDrawPoint = this.center;
+        this.dataDrawPoint = [this.center[0] - dataMetrics.width / 2, this.center[1]];
         this.backgroundShape.SetDrawCenter(this.center[0], this.center[1]);
     }
 
