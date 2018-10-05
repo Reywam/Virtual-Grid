@@ -1,6 +1,7 @@
 import {Cell} from "./Cell";
 import {Line} from "./Line";
 import {IShapeCreator} from "./IShapeCreator";
+import {GridSettings} from "./GridSettings";
 
 export class GridCalculationHelper
 {
@@ -25,6 +26,25 @@ export class GridCalculationHelper
         cell.SetData(newCellData);
     }
 
+    public CreateLineArray(lines:Line[]
+                           , arrayLength:number
+                           , stepX:number
+                           , stepY:number
+                           , lineStart:[number, number]
+                           , lineEnd:[number, number]
+                           , gridSettings:GridSettings)
+    {
+        for(let i = 0 ; i < arrayLength; i++)
+        {
+            lines[i] = new Line(lineStart[0], lineStart[1], lineEnd[0], lineEnd[1]
+                , gridSettings.lineColor, gridSettings.lineThickness);
+            lineStart[0] += stepX;
+            lineStart[1] += stepY;
+            lineEnd[0] += stepX;
+            lineEnd[1] += stepY;
+        }
+    }
+
     public RecalculateCellsData(cells:Cell[][]
                                  , horizontalLinesCount:number
                                  , verticalLinesCount:number
@@ -43,30 +63,26 @@ export class GridCalculationHelper
 
     public CalculateAdditionalBorderValues(horizontalLinesCount:number
                                           , verticalLinesCount:number
-                                          , cellSize:number
-                                          , rightBorder:number
-                                          , botBorder:number):[number, number]
+                                          , gridSettings:GridSettings):[number, number]
     {
-        let additionalHorizontalBorderLength = verticalLinesCount * cellSize - rightBorder;
-        let additionalVerticalBorderLength = horizontalLinesCount * cellSize - botBorder;
+        let additionalHorizontalBorderLength = verticalLinesCount * gridSettings.cellSize - gridSettings.rightBorder;
+        let additionalVerticalBorderLength = horizontalLinesCount * gridSettings.cellSize - gridSettings.botBorder;
         return [additionalHorizontalBorderLength, additionalVerticalBorderLength];
     }
 
     public CalculateNewBorderValues(additionalHorizontalBorderLength:number
-                              , additionalVerticalBorderLength:number
-                              , rightBorder:number
-                              , botBorder:number):[number, number]
+        , additionalVerticalBorderLength:number
+        , gridSettings:GridSettings)
     {
         if(additionalHorizontalBorderLength > 0)
         {
-            rightBorder += additionalHorizontalBorderLength;
+            gridSettings.rightBorder += additionalHorizontalBorderLength;
         }
 
         if(additionalVerticalBorderLength > 0)
         {
-            botBorder += additionalVerticalBorderLength;
+            gridSettings.botBorder += additionalVerticalBorderLength;
         }
-        return [rightBorder, botBorder];
     }
 
     public CalculateNewCellArray(cells:Cell[][]
