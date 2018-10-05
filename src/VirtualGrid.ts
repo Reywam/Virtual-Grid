@@ -28,6 +28,8 @@ export class VirtualGrid
         this.settings.cellSize = cellSize;
         this.settings.lineColor = lineColor;
         this.settings.backgroundColor = backgroundColor;
+        this.settings.rightBorder = canvasWidth;
+        this.settings.botBorder = canvasHeight;
 
         this.calculationHelper = calculationHelper;
         let verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
@@ -35,24 +37,11 @@ export class VirtualGrid
         this.horizontalLines = new Array(horizontalLinesCount);
         this.verticalLines = new Array(verticalLinesCount);
 
-        this.calculationHelper.CreateLineArray(this.horizontalLines
+        this.calculationHelper.CreateGridLines(this.horizontalLines
+            , this.verticalLines
             , horizontalLinesCount
-            , 0
-            , this.settings.cellSize
-            , [0, 0]
-            , [canvasWidth, 0]
-            , this.settings);
-
-        this.calculationHelper.CreateLineArray(this.verticalLines
             , verticalLinesCount
-            , this.settings.cellSize
-            , 0
-            , [0, 0]
-            , [0, canvasWidth]
             , this.settings);
-
-        this.settings.rightBorder = canvasWidth;
-        this.settings.botBorder = canvasHeight;
 
         let additionalBorderValues:[number, number]
                 = this.calculationHelper.CalculateAdditionalBorderValues(horizontalLinesCount
@@ -87,21 +76,10 @@ export class VirtualGrid
 
         this.verticalLines = [];
         this.horizontalLines = [];
-
-        this.calculationHelper.CreateLineArray(this.horizontalLines
+        this.calculationHelper.CreateGridLines(this.horizontalLines
+            , this.verticalLines
             , horizontalLinesCount
-            , 0
-            , this.settings.cellSize
-            , [0, 0]
-            , [canvasWidth, 0]
-            , this.settings);
-
-        this.calculationHelper.CreateLineArray(this.verticalLines
             , verticalLinesCount
-            , this.settings.cellSize
-            , 0
-            , [0, 0]
-            , [0, canvasWidth]
             , this.settings);
 
         const currentShapeState:ShapeState = this.cells[0][0].GetBackgroundShape().GetState();

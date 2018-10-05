@@ -45,6 +45,30 @@ export class GridCalculationHelper
         }
     }
 
+    public CreateGridLines(horizontalLines:Line[], verticalLines:Line[],
+                           horizontalLinesCount:number
+                           , verticalLinesCount:number
+                           , gridSettings:GridSettings)
+    {
+        this.CreateLineArray(horizontalLines
+            , horizontalLinesCount
+            , 0
+            , gridSettings.cellSize
+            , [0, 0]
+            , [gridSettings.rightBorder, 0]
+            , gridSettings);
+
+        this.CreateLineArray(verticalLines
+            , verticalLinesCount
+            , gridSettings.cellSize
+            , 0
+            , [0, 0]
+            , [0, gridSettings.botBorder]
+            , gridSettings);
+        console.log(horizontalLines);
+        console.log(verticalLines);
+    }
+
     public RecalculateCellsData(cells:Cell[][]
                                  , horizontalLinesCount:number
                                  , verticalLinesCount:number
