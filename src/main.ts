@@ -16,6 +16,7 @@ const INITIAL_CELL_SIZE:number = 100;
 const INITIAL_LINE_COLOR:string = "#000000";
 const INITIAL_BACKGROUND_COLOR:string = "#dee2eb";
 const INITIAL_TEXT_COLOR:string = "#000000";
+const INITIAL_TEXT_SIZE:number = 15;
 
 let calculationHelper:GridCalculationHelper = new GridCalculationHelper(ctx);
 let shapeCreator:IShapeCreator  = new RectangleCreator(INITIAL_SHAPE_SIZE, INITIAL_SHAPE_COLOR);
@@ -34,10 +35,11 @@ shapeSizeInput.value = INITIAL_SHAPE_SIZE.toString();
 shapeColorInput.value = INITIAL_SHAPE_COLOR.toString();
 gridColorInput.value = INITIAL_BACKGROUND_COLOR.toString();
 textColorInput.value = INITIAL_TEXT_COLOR.toString();
+textSizeInput.value = INITIAL_TEXT_SIZE.toString();
 
 cellSizeInput.addEventListener("change", ChangeCellSize);
-shapeSizeInput.addEventListener("change", ResetShapeSize);
-textSizeInput.addEventListener("change", ResetTextSize);
+shapeSizeInput.addEventListener("change", ChangeShapeSize);
+textSizeInput.addEventListener("change", ChangeTextSize);
 rectangleCheckbox.addEventListener("change", ChooseShape);
 circleCheckbox.addEventListener("change", ChooseShape);
 
@@ -82,12 +84,12 @@ function ChangeCellSize()
     grid.ChangeCellSize(cellSizeInput.valueAsNumber, canvas.width, canvas.height, shapeCreator);
 }
 
-function ResetShapeSize()
+function ChangeShapeSize()
 {
     grid.ChangeShapeSize(shapeSizeInput.valueAsNumber);
 }
 
-function ResetTextSize()
+function ChangeTextSize()
 {
     grid.ChangeTextSize(textSizeInput.valueAsNumber);
 }
@@ -95,6 +97,7 @@ function ResetTextSize()
 let grid:VirtualGrid = new VirtualGrid(canvas.width
     , canvas.height
     , INITIAL_CELL_SIZE
+    , INITIAL_TEXT_SIZE
     , INITIAL_LINE_COLOR
     , INITIAL_BACKGROUND_COLOR
     , calculationHelper

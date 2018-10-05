@@ -19,6 +19,7 @@ export class VirtualGrid
     public constructor(canvasWidth:number
                 , canvasHeight:number
                 , cellSize:number
+                , dataFontSize:number
                 , lineColor:string = "#000000"
                 , backgroundColor = "#ffffff"
                 , calculationHelper:GridCalculationHelper
@@ -29,6 +30,7 @@ export class VirtualGrid
         this.settings.backgroundColor = backgroundColor;
         this.settings.rightBorder = canvasWidth;
         this.settings.botBorder = canvasHeight;
+        this.settings.dataFontSize = dataFontSize;
 
         this.calculationHelper = calculationHelper;
         let verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
@@ -92,6 +94,8 @@ export class VirtualGrid
             , this.settings.cellSize
             , shapeCreator);
 
+        this.ChangeTextSize(this.settings.dataFontSize);
+
         this.calculationHelper.RecalculateCellsData(this.cells
             , horizontalLinesCount
             , verticalLinesCount
@@ -151,6 +155,7 @@ export class VirtualGrid
 
     public ChangeTextSize(size:number)
     {
+        this.settings.dataFontSize = size;
         for(let y:number = 0; y < this.cells.length; y++)
         {
             for(let x:number = 0; x < this.cells[y].length; x++)

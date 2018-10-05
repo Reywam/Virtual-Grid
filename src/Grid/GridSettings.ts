@@ -8,6 +8,17 @@ export class GridSettings
     private _topBorder:number = 0;
     private _leftBorder:number = 0;
     private _botBorder:number;
+    private _dataFontSize:number;
+
+    get dataFontSize(): number
+    {
+        return this._dataFontSize;
+    }
+
+    set dataFontSize(value: number)
+    {
+        this._dataFontSize = value;
+    }
 
     get botBorder(): number
     {
