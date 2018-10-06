@@ -1,5 +1,5 @@
-import {Line} from "../Line";
-import {Cell} from "../Cell";
+import {Line} from "./Components/Line";
+import {Cell} from "./Components/Cell";
 import {GridCalculationHelper} from "./GridCalculationHelper";
 import {IShapeCreator} from "../Creators/IShapeCreator";
 import {ShapeState} from "../Shapes/ShapeState";
@@ -7,7 +7,7 @@ import {GridSettings} from "./GridSettings";
 
 export class VirtualGrid
 {
-    private settings:GridSettings = new GridSettings();
+    private settings:GridSettings;
     private horizontalLines:Array<Line>;
     private verticalLines:Array<Line>;
     private cells:Cell[][] = [];
@@ -16,25 +16,13 @@ export class VirtualGrid
     private offsetX:number = 0;
     private offsetY:number = 0;
 
-    public constructor(canvasWidth:number
-                , canvasHeight:number
-                , cellSize:number
-                , dataFontSize:number
-                , lineColor:string = "#000000"
-                , backgroundColor = "#ffffff"
-                , calculationHelper:GridCalculationHelper
-                , shapeCreator:IShapeCreator)
+    public constructor(startSettings:GridSettings, calculationHelper:GridCalculationHelper, shapeCreator:IShapeCreator)
     {
-        this.settings.cellSize = cellSize;
-        this.settings.lineColor = lineColor;
-        this.settings.backgroundColor = backgroundColor;
-        this.settings.rightBorder = canvasWidth;
-        this.settings.botBorder = canvasHeight;
-        this.settings.dataFontSize = dataFontSize;
+        this.settings = startSettings;
 
         this.calculationHelper = calculationHelper;
-        let verticalLinesCount = Math.round(canvasWidth / cellSize) + 1;
-        let horizontalLinesCount = Math.round(canvasHeight / cellSize) + 1;
+        let verticalLinesCount = Math.round(this.settings.rightBorder / this.settings.cellSize) + 1;
+        let horizontalLinesCount = Math.round(this.settings.botBorder / this.settings.cellSize) + 1;
         this.horizontalLines = new Array(horizontalLinesCount);
         this.verticalLines = new Array(verticalLinesCount);
 
@@ -55,8 +43,8 @@ export class VirtualGrid
             , this.horizontalLines
             , this.verticalLines
             , this.settings.cellSize
+            , this.settings.dataFontSize
             , shapeCreator);
-        console.log(this.cells);
     }
 
     public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
@@ -92,6 +80,7 @@ export class VirtualGrid
             , this.horizontalLines
             , this.verticalLines
             , this.settings.cellSize
+            , this.settings.dataFontSize
             , shapeCreator);
 
         this.ChangeTextSize(this.settings.dataFontSize);
@@ -142,7 +131,7 @@ export class VirtualGrid
         }
     }
 
-    public ChangeCellsShape(shapeCreator:IShapeCreator)
+    public ChangeCellShape(shapeCreator:IShapeCreator)
     {
         for(let y:number = 0; y < this.cells.length; y++)
         {
@@ -293,13 +282,13 @@ export class VirtualGrid
         this.offsetX += movementX;
         this.offsetY += movementY;
 
-        if(this.offsetX + movementX <= 0)
+        if(this.offsetX <= 0)
         {
             movementX -= this.offsetX;
             this.offsetX = 0;
         }
 
-        if(this.offsetY + movementY <= 0)
+        if(this.offsetY <= 0)
         {
             movementY -= this.offsetY;
             this.offsetY = 0;
@@ -310,7 +299,6 @@ export class VirtualGrid
 
         this.MoveCellsHorizontally(movementX);
         this.MoveCellsVertically(movementY);
-        console.log(this.cells);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)

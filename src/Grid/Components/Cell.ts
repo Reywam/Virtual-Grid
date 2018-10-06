@@ -1,5 +1,5 @@
-import {IDrawableShape} from "./Shapes/IDrawableShape";
-import {ShapeState} from "./Shapes/ShapeState";
+import {IDrawableShape} from "../../Shapes/IDrawableShape";
+import {ShapeState} from "../../Shapes/ShapeState";
 
 export class Cell
 {
@@ -8,22 +8,24 @@ export class Cell
     private startPoint:[number,number];
     private endPoint:[number,number];
     private dataDrawPoint:[number, number];
-    private fontSize:number = 15;
+    private fontSize:number;
     private textColor:string = "#000000";
     private center:[number, number];
     private backgroundShape:IDrawableShape;
 
-    constructor(x:number, y:number, size:number, data:string, backgroundShape:IDrawableShape)
+    constructor(x:number, y:number, size:number, data:string, fontSize:number, backgroundShape:IDrawableShape)
     {
         this.startPoint = [x, y];
         this.endPoint = [x + size, y + size];
         this.data = data;
+        this.fontSize = fontSize;
         this.size = size;
         this.center = [this.startPoint[0] + size / 2, this.startPoint[1] + size / 2];
         this.backgroundShape = backgroundShape;
 
         let canvas = <HTMLCanvasElement> document.getElementById("canvas");
         let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+        ctx.font = this.fontSize+"px Verdana";
         let dataMetrics:TextMetrics= ctx.measureText(data);
 
         this.dataDrawPoint = [this.center[0] - dataMetrics.width / 2, this.center[1]];
@@ -60,6 +62,12 @@ export class Cell
     public SetFontSize(size:number)
     {
         this.fontSize = size;
+        let canvas = <HTMLCanvasElement> document.getElementById("canvas");
+        let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+        ctx.font = this.fontSize+"px Verdana";
+        let dataMetrics:TextMetrics= ctx.measureText(this.data);
+
+        this.dataDrawPoint = [this.center[0] - dataMetrics.width / 2, this.center[1]];
     }
 
     public SetShape(shape:IDrawableShape)

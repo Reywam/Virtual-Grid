@@ -1,14 +1,22 @@
+import {AppConfig} from "../Config/AppConfig";
+
 export class GridSettings
 {
     private _lineThickness:number = 1;
-    private _lineColor:string;
-    private _cellSize:number;
-    private _backgroundColor:string;
+    private _lineColor:string = AppConfig.INITIAL_LINE_COLOR;
+    private _cellSize:number = AppConfig.INITIAL_CELL_SIZE;
+    private _backgroundColor:string = AppConfig.INITIAL_BACKGROUND_COLOR;
     private _rightBorder:number;
     private _topBorder:number = 0;
     private _leftBorder:number = 0;
     private _botBorder:number;
-    private _dataFontSize:number;
+    private _dataFontSize:number = AppConfig.INITIAL_TEXT_SIZE;
+
+    constructor(rightBorder:number, botBorder:number)
+    {
+        this._rightBorder = rightBorder;
+        this._botBorder = botBorder;
+    }
 
     get dataFontSize(): number
     {

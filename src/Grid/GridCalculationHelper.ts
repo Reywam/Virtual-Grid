@@ -1,5 +1,5 @@
-import {Cell} from "../Cell";
-import {Line} from "../Line";
+import {Cell} from "./Components/Cell";
+import {Line} from "./Components/Line";
 import {IShapeCreator} from "../Creators/IShapeCreator";
 import {GridSettings} from "./GridSettings";
 
@@ -65,8 +65,6 @@ export class GridCalculationHelper
             , [0, 0]
             , [0, gridSettings.botBorder]
             , gridSettings);
-        console.log(horizontalLines);
-        console.log(verticalLines);
     }
 
     public RecalculateCellsData(cells:Cell[][]
@@ -113,6 +111,7 @@ export class GridCalculationHelper
                                  , horizontalLines:Line[]
                                  , verticalLines:Line[]
                                  , cellSize:number
+                                 , dataFontSize:number
                                  , shapeCreator:IShapeCreator)
     {
         for(let y:number = 0; y < horizontalLines.length; y++)
@@ -128,6 +127,7 @@ export class GridCalculationHelper
                     , cellStartPoint[1]
                     , cellSize
                     , cellData
+                    , dataFontSize
                     , shapeCreator.CreateShape());
             }
         }
