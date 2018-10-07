@@ -63,6 +63,7 @@ export class GridController
         this.mouseBtnPressed = false;
         if(this.wasGridMovement)
         {
+            //this.MoveGridWithAcceleration(this.AccelerationHorizontalMovement, this.ACCELERATION_MOVEMENT_TIME);
             if(Math.abs(this.currMX) >= 10)
             {
                 this.MoveGridWithAcceleration(this.AccelerationHorizontalMovement, this.ACCELERATION_MOVEMENT_TIME);
@@ -109,7 +110,6 @@ export class GridController
             }
         });
     };
-
     ChooseShape = () =>
     {
         if(this.userInterface.circleCheckbox.checked && !this.userInterface.rectangleCheckbox.checked)

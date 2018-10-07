@@ -34,6 +34,7 @@ export class GridCalculationHelper
                            , lineEnd:[number, number]
                            , gridSettings:GridSettings)
     {
+
         for(let i = 0 ; i < arrayLength; i++)
         {
             lines[i] = new Line(lineStart[0], lineStart[1], lineEnd[0], lineEnd[1]
@@ -89,6 +90,7 @@ export class GridCalculationHelper
     {
         let additionalHorizontalBorderLength = verticalLinesCount * gridSettings.cellSize - gridSettings.rightBorder;
         let additionalVerticalBorderLength = horizontalLinesCount * gridSettings.cellSize - gridSettings.botBorder;
+
         if(additionalHorizontalBorderLength > 0)
         {
             gridSettings.rightBorder += additionalHorizontalBorderLength;
