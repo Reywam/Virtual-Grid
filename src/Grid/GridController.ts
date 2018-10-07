@@ -10,8 +10,12 @@ export class GridController
     private canvasWidth:number;
     private canvasHeight:number;
     private mouseBtnPressed:boolean = false;
+    private wasGridMovement:boolean = false;
     private userInterface:UI = new UI;
     private shapeCreator:IShapeCreator;
+    private currMX:number;
+    private currMY:number;
+    private ACCELERATION_MOVEMENT_TIME = 1000;
 
     constructor(grid:VirtualGrid, ctx:CanvasRenderingContext2D, shapeCreator:IShapeCreator)
     {
@@ -39,20 +43,61 @@ export class GridController
 
     MouseMove = (event: MouseEvent) =>
     {
+        this.wasGridMovement = true;
         if(this.mouseBtnPressed)
         {
             this._grid.Move(event.movementX, event.movementY);
+            this.currMX = event.movementX;
+            this.currMY = event.movementY;
         }
     };
 
     MouseDown = () =>
     {
+        this.wasGridMovement = false;
         this.mouseBtnPressed = true;
     };
 
     MouseUp = () =>
     {
         this.mouseBtnPressed = false;
+        if(this.wasGridMovement)
+        {
+            this.MoveGridWithAcceleration(this.AccelerationHorizontalMovement
+                , this.currMX, this.currMY, this.ACCELERATION_MOVEMENT_TIME);
+        }
+    };
+
+    AccelerationHorizontalMovement = (movement:number, timePassed:number) =>
+    {
+        this.AccelerationMovement(movement, 0, timePassed, this.ACCELERATION_MOVEMENT_TIME);
+    };
+
+    AccelerationMovement = (movementX:number, movementY:number, timePassed:number, duration:number) =>
+    {
+        this._grid.Move(movementX * (duration - timePassed) / 1000
+            , movementY * (duration - timePassed) / 1000);
+    };
+
+    MoveGridWithAcceleration = (moveGrid: (mX:number, mY:number, timePassed:number, maxTime:number) => void
+                                , mX:number, mY:number, duration:number) =>
+    {
+        let start = performance.now();
+
+        requestAnimationFrame(function move(time)
+        {
+            let timePassed = time - start;
+            if (timePassed > duration)
+            {
+                timePassed = duration;
+            }
+
+            moveGrid(mX, mY, timePassed, duration);
+            if (timePassed < duration)
+            {
+                requestAnimationFrame(move);
+            }
+        });
     };
 
     ChooseShape = () =>

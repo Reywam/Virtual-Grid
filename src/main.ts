@@ -19,9 +19,11 @@ let grid:VirtualGrid = new VirtualGrid(startGridSettings, calculationHelper, sha
 
 let controller:GridController = new GridController(grid, ctx, shapeCreator);
 controller.SetupUIListeners();
+
 function Render()
 {
     grid.Draw(ctx);
+
     requestAnimationFrame(Render);
 }
 

@@ -262,12 +262,6 @@ export class VirtualGrid
 
     public Move(movementX:number, movementY:number)
     {
-        this.calculationHelper.RecalculateCellsData(this.cells
-            , this.horizontalLines.length
-            , this.verticalLines.length
-            , this.offsetX
-            , this.offsetY
-            , this.settings.cellSize);
         movementX = -movementX;
         movementY = -movementY;
 
@@ -291,6 +285,13 @@ export class VirtualGrid
 
         this.MoveCellsHorizontally(movementX);
         this.MoveCellsVertically(movementY);
+
+        this.calculationHelper.RecalculateCellsData(this.cells
+            , this.horizontalLines.length
+            , this.verticalLines.length
+            , this.offsetX
+            , this.offsetY
+            , this.settings.cellSize);
     }
 
     public Draw(ctx:CanvasRenderingContext2D)
