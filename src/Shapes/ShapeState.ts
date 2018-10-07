@@ -11,27 +11,33 @@ export class ShapeState
         this._color = color;
     }
 
-    get drawCenter(): [number, number] {
+    get drawCenter(): [number, number]
+    {
         return this._drawCenter;
     }
 
-    set drawCenter(value: [number, number]) {
+    set drawCenter(value: [number, number])
+    {
         this._drawCenter = value;
     }
 
-    get color(): string {
+    get color(): string
+    {
         return this._color;
     }
 
-    set color(value: string) {
+    set color(value: string)
+    {
         this._color = value;
     }
 
-    get size(): number {
+    get size(): number
+    {
         return this._size;
     }
 
-    set size(value: number) {
+    set size(value: number)
+    {
         this._size = value;
     }
 }

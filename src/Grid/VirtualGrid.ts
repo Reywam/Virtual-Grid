@@ -19,8 +19,8 @@ export class VirtualGrid
     public constructor(startSettings:GridSettings, calculationHelper:GridCalculationHelper, shapeCreator:IShapeCreator)
     {
         this.settings = startSettings;
-
         this.calculationHelper = calculationHelper;
+
         let verticalLinesCount = Math.round(this.settings.rightBorder / this.settings.cellSize) + 1;
         let horizontalLinesCount = Math.round(this.settings.botBorder / this.settings.cellSize) + 1;
         this.horizontalLines = new Array(horizontalLinesCount);
@@ -45,6 +45,7 @@ export class VirtualGrid
             , this.settings.cellSize
             , this.settings.dataFontSize
             , shapeCreator);
+        console.log(this.cells);
     }
 
     public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)

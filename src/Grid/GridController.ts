@@ -1,5 +1,4 @@
 import {VirtualGrid} from "./VirtualGrid";
-import {AppConfig} from "../Config/AppConfig";
 import {RectangleCreator} from "../Creators/RectangleCreator";
 import {CircleCreator} from "../Creators/CircleCreator";
 import {UI} from "./UI";
@@ -61,12 +60,12 @@ export class GridController
         if(this.userInterface.circleCheckbox.checked && !this.userInterface.rectangleCheckbox.checked)
         {
             this.shapeCreator = new CircleCreator(this.userInterface.shapeSizeInput.valueAsNumber
-                , AppConfig.INITIAL_SHAPE_COLOR);
+                , this.userInterface.shapeColorInput.value);
         }
         else if (this.userInterface.rectangleCheckbox.checked && !this.userInterface.circleCheckbox.checked)
         {
             this.shapeCreator = new RectangleCreator(this.userInterface.shapeSizeInput.valueAsNumber
-                , AppConfig.INITIAL_SHAPE_COLOR);
+                , this.userInterface.shapeColorInput.value);
         }
         else
         {

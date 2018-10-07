@@ -24,7 +24,7 @@ export class Circle implements IDrawableShape
     {
         ctx.beginPath();
         ctx.fillStyle = this.color;
-        ctx.arc(this.center[0],this.center[1],this.radius,0,2*Math.PI);
+        ctx.arc(this.center[0], this.center[1], this.radius,0,2*Math.PI);
         ctx.fill();
         ctx.closePath();
     }
@@ -36,7 +36,7 @@ export class Circle implements IDrawableShape
 
     GetState(): ShapeState
     {
-        return new ShapeState(this.radius, this.center, this.color);
+        return new ShapeState(this.radius * 2, this.center, this.color);
     }
 
     SetState(state: ShapeState): void

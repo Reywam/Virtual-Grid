@@ -74,7 +74,7 @@ export class Cell
     {
         let currentState:ShapeState = this.backgroundShape.GetState();
         this.backgroundShape = shape;
-        this.backgroundShape.SetState(currentState);
+        this.backgroundShape.SetSize(currentState.size);
         this.backgroundShape.SetDrawCenter(currentState.drawCenter[0], currentState.drawCenter[1]);
     }
 
