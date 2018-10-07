@@ -63,14 +63,25 @@ export class GridController
         this.mouseBtnPressed = false;
         if(this.wasGridMovement)
         {
-            this.MoveGridWithAcceleration(this.AccelerationHorizontalMovement
-                , this.currMX, this.currMY, this.ACCELERATION_MOVEMENT_TIME);
+            if(Math.abs(this.currMX) >= 10)
+            {
+                this.MoveGridWithAcceleration(this.AccelerationHorizontalMovement, this.ACCELERATION_MOVEMENT_TIME);
+            }
+            else if(Math.abs(this.currMY ) >= 10)
+            {
+                this.MoveGridWithAcceleration(this.AccelerationVerticalMovement, this.ACCELERATION_MOVEMENT_TIME);
+            }
         }
     };
 
-    AccelerationHorizontalMovement = (movement:number, timePassed:number) =>
+    AccelerationHorizontalMovement = (timePassed:number) =>
     {
-        this.AccelerationMovement(movement, 0, timePassed, this.ACCELERATION_MOVEMENT_TIME);
+        this.AccelerationMovement(this.currMX, 0, timePassed, this.ACCELERATION_MOVEMENT_TIME);
+    };
+
+    AccelerationVerticalMovement = (timePassed:number) =>
+    {
+        this.AccelerationMovement(0, this.currMY, timePassed, this.ACCELERATION_MOVEMENT_TIME);
     };
 
     AccelerationMovement = (movementX:number, movementY:number, timePassed:number, duration:number) =>
@@ -79,8 +90,7 @@ export class GridController
             , movementY * (duration - timePassed) / 1000);
     };
 
-    MoveGridWithAcceleration = (moveGrid: (mX:number, mY:number, timePassed:number, maxTime:number) => void
-                                , mX:number, mY:number, duration:number) =>
+    MoveGridWithAcceleration = (moveGrid: (timePassed:number) => void, duration:number) =>
     {
         let start = performance.now();
 
@@ -92,7 +102,7 @@ export class GridController
                 timePassed = duration;
             }
 
-            moveGrid(mX, mY, timePassed, duration);
+            moveGrid(timePassed);
             if (timePassed < duration)
             {
                 requestAnimationFrame(move);
