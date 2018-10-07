@@ -32,12 +32,8 @@ export class VirtualGrid
             , verticalLinesCount
             , this.settings);
 
-        let additionalBorderValues:[number, number]
-                = this.calculationHelper.CalculateAdditionalBorderValues(horizontalLinesCount
-                                                                    , verticalLinesCount
-                                                                    , this.settings);
-        this.calculationHelper.CalculateNewBorderValues(additionalBorderValues[0]
-            , additionalBorderValues[1], this.settings);
+        this.calculationHelper.ResetBordersByCellSize(horizontalLinesCount
+            , verticalLinesCount, this.settings);
 
         this.calculationHelper.CalculateNewCellArray(this.cells
             , this.horizontalLines
@@ -45,7 +41,6 @@ export class VirtualGrid
             , this.settings.cellSize
             , this.settings.dataFontSize
             , shapeCreator);
-        console.log(this.cells);
     }
 
     public ChangeCellSize(size:number, canvasWidth:number, canvasHeight:number, shapeCreator:IShapeCreator)
@@ -57,12 +52,8 @@ export class VirtualGrid
         let verticalLinesCount = Math.round(canvasWidth / size) + 1;
         let horizontalLinesCount = Math.round(canvasHeight / size) + 1;
 
-        let additionalBorderValues:[number, number]
-            = this.calculationHelper.CalculateAdditionalBorderValues(horizontalLinesCount
+        this.calculationHelper.ResetBordersByCellSize(horizontalLinesCount
             , verticalLinesCount
-            , this.settings);
-        this.calculationHelper.CalculateNewBorderValues(additionalBorderValues[0]
-            , additionalBorderValues[1]
             , this.settings);
 
         this.verticalLines = [];

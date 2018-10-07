@@ -83,19 +83,12 @@ export class GridCalculationHelper
         }
     }
 
-    public CalculateAdditionalBorderValues(horizontalLinesCount:number
-                                          , verticalLinesCount:number
-                                          , gridSettings:GridSettings):[number, number]
+    public ResetBordersByCellSize(horizontalLinesCount:number
+        , verticalLinesCount:number
+        , gridSettings:GridSettings)
     {
         let additionalHorizontalBorderLength = verticalLinesCount * gridSettings.cellSize - gridSettings.rightBorder;
         let additionalVerticalBorderLength = horizontalLinesCount * gridSettings.cellSize - gridSettings.botBorder;
-        return [additionalHorizontalBorderLength, additionalVerticalBorderLength];
-    }
-
-    public CalculateNewBorderValues(additionalHorizontalBorderLength:number
-        , additionalVerticalBorderLength:number
-        , gridSettings:GridSettings)
-    {
         if(additionalHorizontalBorderLength > 0)
         {
             gridSettings.rightBorder += additionalHorizontalBorderLength;
