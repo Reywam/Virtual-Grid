@@ -110,6 +110,7 @@ export class GridController
             }
         });
     };
+
     ChooseShape = () =>
     {
         if(this.userInterface.circleCheckbox.checked && !this.userInterface.rectangleCheckbox.checked)
@@ -148,6 +149,7 @@ export class GridController
     {
         this._grid.ChangeCellSize(this.userInterface.cellSizeInput.valueAsNumber
             , this.canvasWidth, this.canvasHeight, this.shapeCreator);
+        this.ChangeTextColor();
     };
 
     ChangeShapeSize = () =>
