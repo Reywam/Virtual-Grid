@@ -49,8 +49,10 @@ export class VirtualGrid
         this.settings.rightBorder = canvasWidth;
         this.settings.botBorder = canvasHeight;
 
-        this.offsetX = Math.round((this.offsetX + this.settings.cellSize)/ this.settings.cellSize) * this.settings.cellSize;
-        this.offsetY = Math.round((this.offsetY +this.settings.cellSize)/ this.settings.cellSize) * this.settings.cellSize;
+        this.offsetX = Math.round((this.offsetX + this.settings.cellSize) / this.settings.cellSize)
+            * this.settings.cellSize;
+        this.offsetY = Math.round((this.offsetY +this.settings.cellSize) / this.settings.cellSize)
+            * this.settings.cellSize;
 
         let verticalLinesCount = Math.round(this.settings.rightBorder / size) + 1;
         let horizontalLinesCount = Math.round(this.settings.botBorder / size) + 1;

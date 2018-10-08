@@ -40,7 +40,7 @@ export class Cell
         let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
         let dataMetrics:TextMetrics= ctx.measureText(this.data);
         this.center = [this.startPoint[0] + this.size / 2, this.startPoint[1] + this.size / 2];
-        this.dataDrawPoint = [this.center[0] - dataMetrics.width / 2, this.center[1]];
+        this.SetData(this.data, dataMetrics.width);
         this.backgroundShape.SetDrawCenter(this.center[0], this.center[1]);
     }
 
@@ -54,9 +54,10 @@ export class Cell
         return this.endPoint;
     }
 
-    public SetData(data:string)
+    public SetData(data:string, dataWidth:number)
     {
         this.data = data;
+        this.dataDrawPoint = [this.center[0] - dataWidth / 2, this.center[1]];
     }
 
     public SetFontSize(size:number)

@@ -22,8 +22,8 @@ export class GridCalculationHelper
         let valueX:number = (offsetX + beginPoint[0]) / cellSize;
         let valueY:number = (offsetY + beginPoint[1]) / cellSize;
         let newCellData:string = Math.round(valueX) + "-" + Math.round(valueY);
-        this.CalculateDataWidth(newCellData);
-        cell.SetData(newCellData);
+        let dataWidth = this.CalculateDataWidth(newCellData);
+        cell.SetData(newCellData, dataWidth);
     }
 
     public CreateLineArray(lines:Line[]
